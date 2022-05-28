@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../core/Button'
 import GoldCoins from '../../assets/gold_coins.svg'
 import Background from '../../assets/fortress-inside.png'
+import Briefcase from '../../assets/briefcase.svg'
+import MoneyBag from '../../assets/money-bag.svg'
 import { Link } from 'react-router-dom'
 import Inventory, { BURLAP_SACK, GOLD, LEATHER_SACK } from '../common/Inventory'
 
@@ -42,6 +44,16 @@ const Theft = () => {
                 return 0.5
         }
     }
+
+    useEffect(() => {
+        if (inventoryItems.find(e => e.type === bagType).count === 0) {
+            if (inventoryItems.find(e => e.type === BURLAP_SACK)?.count > 0) {
+                setBagType(BURLAP_SACK)
+            } else if (inventoryItems.find(e => e.type === LEATHER_SACK)?.count > 0) {
+                setBagType(LEATHER_SACK)
+            }
+        }
+    }, [])
     
     const handleAddClick = () => {
         if (Math.random() > getPercentage()) {
@@ -51,6 +63,14 @@ const Theft = () => {
             setHistory([...history, {message: 'failure', count: 0, bagType: bagType, action: 'bag burst!'}])
             setGoldCount(0)
             updateInventory(bagType, -1)
+
+            if (inventoryItems.find(e => e.type === bagType).count === 0) {
+                if (inventoryItems.find(e => e.type === BURLAP_SACK)?.count > 0) {
+                    setBagType(BURLAP_SACK)
+                } else if (inventoryItems.find(e => e.type === LEATHER_SACK)?.count > 0) {
+                    setBagType(LEATHER_SACK)
+                }
+            }
         }
     }
 
@@ -86,6 +106,10 @@ const Theft = () => {
                     </Link>
                 </div>
                 <p style={{ fontSize: '1rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{`Best haul: ${highScore[bagType]}`}</p>
+                <div style={{ display: 'flex' }}>
+                    <BagSelector bagType={BURLAP_SACK} setBagType={() => setBagType(BURLAP_SACK)} count={inventoryItems.find(e => e.type === BURLAP_SACK)?.count || 0} isSelected={bagType === BURLAP_SACK} disabled={goldCount != 0} />
+                    <BagSelector bagType={LEATHER_SACK} setBagType={() => setBagType(LEATHER_SACK)} count={inventoryItems.find(e => e.type === LEATHER_SACK)?.count || 0} isSelected={bagType === LEATHER_SACK} disabled={goldCount != 0} />
+                </div>
             </div>
             {localStorage.getItem('isDeveloper') === 'true' && (
                 <div style={{ position: 'absolute', bottom: 0, right: 0, width: '30%', height: '30%', display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(100, 100, 100, 0.5)', padding: 5, border: '3px solid black', overflow: 'scroll', minHeight: 300, minWidth: 300, maxWidth: '100%', maxHeight: '100%' }}>
@@ -97,3 +121,31 @@ const Theft = () => {
 }
 
 export default Theft
+
+const BagSelector = ({ bagType, setBagType, count, isSelected, disabled }) => {
+
+    const getInventoryImage = () => {
+        switch (bagType) {
+            case GOLD:
+                return GoldCoins
+            case BURLAP_SACK:
+                return MoneyBag
+            case LEATHER_SACK:
+                return Briefcase
+            default:
+                return 'https://i.imgur.com/g9ZQ2nZ.png'
+        }
+    }
+
+    const handleClick = () => {
+        if (count > 0 && !isSelected && !disabled) {
+            setBagType()
+        }
+    }
+
+    return (
+        <div onClick={handleClick} style={{ transition: 'all .2s', borderRadius: '1rem', width: '4rem', height: '4rem', display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', opacity: count > 0 ? 1 : 0.5, border: isSelected ? '3px black solid' : 'none', margin: isSelected ? -3 : 0 }}>
+            <img style={{ height: '3rem' }} src={getInventoryImage()} alt="Burlap Sack" />
+        </div>
+    )
+}
