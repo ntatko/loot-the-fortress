@@ -3,6 +3,7 @@ import './App.css';
 import HomeMenu from './components/modes/HomeMenu';
 import Shop from './components/modes/Shop';
 import Theft from './components/modes/Theft';
+import Escape from './components/modes/Escape';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/theft" element={<Theft />} />
           <Route path="/inventory" element={<Shop />} />
+          <Route path="/escape" element={<Escape />} />
           <Route path="/" element={<HomeMenu />} />
         </Routes>
       </BrowserRouter>

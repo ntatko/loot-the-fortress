@@ -36,11 +36,14 @@ const Theft = () => {
         localStorage.setItem('inventoryItems', JSON.stringify([{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}]))
     }
     const getPercentage = () => {
+        if (goldCount === 0) {
+            return 0
+        }
         switch (bagType) {
             case 'burlap sack':
-                return 0.25
+                return 0.2
             case 'leather sack':
-                return 0.125
+                return 0.0625
             default:
                 return 0.5
         }
@@ -61,8 +64,8 @@ const Theft = () => {
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
             setGoldCount(goldCount + 1)
         } else {
-            setHistory([...history, {message: 'failure', count: 0, bagType: bagType, action: 'bag burst!'}])
-            setGoldCount(0)
+            setHistory([...history, {message: 'failure', count: 1, bagType: bagType, action: 'bag burst!'}])
+            setGoldCount(1)
             updateInventory(bagType, -1)
 
             if (inventoryItems.find(e => e.type === bagType).count === 0) {
@@ -82,9 +85,6 @@ const Theft = () => {
             localStorage.setItem('highScore', JSON.stringify({...highScore, [bagType]: goldCount}))
             setHighScore({...highScore, [bagType]: goldCount})
         }
-        updateInventory(GOLD, goldCount)
-
-        setGoldCount(0)
     }
 
     return (
@@ -100,9 +100,9 @@ const Theft = () => {
                     <Button disabled={!hasBags} onClick={handleAddClick}>
                         Loot
                     </Button>
-                    <Link to="/">
+                    <Link to={goldCount === 0 ? "/" : "/escape"} state={{amount: goldCount}}>
                         <Button onClick={handleStopClick}>
-                            Flee
+                            Escape
                         </Button>
                     </Link>
                 </div>
