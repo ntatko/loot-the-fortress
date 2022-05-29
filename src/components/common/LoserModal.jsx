@@ -13,7 +13,7 @@ const LoserModal = (props) => {
 
                         <div style={{ fontSize: '1.2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>
                             <p>
-                                You suck at this. You lost. Try again.
+                                Thieving isn't for everyone. Better luck next time!
                             </p>
                         </div>
 
