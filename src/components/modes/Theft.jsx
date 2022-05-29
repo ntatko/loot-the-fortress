@@ -6,6 +6,7 @@ import Briefcase from '../../assets/briefcase.svg'
 import MoneyBag from '../../assets/money-bag.svg'
 import { Link } from 'react-router-dom'
 import Inventory, { BURLAP_SACK, GOLD, LEATHER_SACK } from '../common/Inventory'
+import LoserModal from '../common/LoserModal'
 
 const Theft = () => {
 
@@ -116,6 +117,7 @@ const Theft = () => {
                     {history.map((item) => (<div style={{ fontSize: '0.7rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{`${item.message} - ${item.count} - ${item.bagType} - ${item.action}`}</div>))}
                 </div>
             )}
+            <LoserModal show={!hasBags && inventoryItems.find(e => e.type === GOLD).count < 3} />
         </div>
     )
 }
