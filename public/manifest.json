@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Loot the Fortress",
+  "name": "1904Labs Gamejam Fortress Looting Game",
   "icons": [
     {
       "src": "favicon.ico",

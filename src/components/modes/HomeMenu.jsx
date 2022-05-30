@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../core/Button'
 import Background from '../../assets/castle-background.png'
-import Inventory, { BURLAP_SACK, GOLD } from '../common/Inventory'
+import Inventory, { BURLAP_SACK, CROWN, GOLD } from '../common/Inventory'
 import InstructionModal from '../common/InstructionModal'
 
 const HomeMenu = () => {
@@ -27,8 +27,8 @@ const HomeMenu = () => {
 
 
     return (
-        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundImage: `url(${Background})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll' }}>
-            <div style={{ fontSize: '5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Loot the Fortress</div>
+        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
+            <div style={{ fontSize: '4rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Loot the Fortress</div>
             <Link to="/theft">
                 <Button onClick={onClick}>
                     Go Looting
@@ -46,6 +46,12 @@ const HomeMenu = () => {
                 localStorage.setItem('firstTime', JSON.stringify(false))
             }} />
             <Button onClick={() => setFirstTime(true)}>Instructions</Button>
+            { inventoryItems.find(item => item.type === CROWN) && inventoryItems.find(item => item.type === CROWN).count > 0 && (
+                <Button onClick={() => {
+                    localStorage.setItem('inventoryItems', null)
+                    window.location.reload()
+                }}>Start Over</Button>
+            )}
         </div>
     )
 

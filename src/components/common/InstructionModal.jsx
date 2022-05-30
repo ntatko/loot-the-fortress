@@ -44,7 +44,7 @@ const InstructionModal = (props) => {
                             </p>
                             <p>
                                 If you're escaping the fortress with <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> loot, you'll need to find the <img style={{ height: '1.5rem' }} src={Key} alt={props.type} /> <b>key</b>.
-                                You'll be presented with <b>trivia questions</b>. You have 5 chances to get 3 correct answers. If you get 3 correct answers, you keep your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> money.
+                                You'll be presented with a <b>trivia question</b>. If you get answer correctly, you keep your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> money.
                                 If you don't, you'll have to pay a <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> bribe to get out of the fortress (half your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> loot, rounded up).
                             </p>
                             <p>

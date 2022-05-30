@@ -60,8 +60,8 @@ const Escape = () => {
 
     return (
         <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundImage: `url(${Background})`, overflow: 'scroll', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
-            <div style={{ padding: '1rem', backgroundColor: '#ffffff7e', borderRadius: '2rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ padding: '1rem', backgroundColor: '#ffffff7e', borderRadius: '2rem', width: '35rem', maxWidth: '100%', maxHeight: '100%', overflow: 'scroll' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', padding: '0.25rem' }}>
                     <div style={{ fontSize: '5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Escape</div>
                     <div>
                         <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Correct: {correctCount}/3</div>
@@ -71,7 +71,7 @@ const Escape = () => {
                 {renderQuestion()}
             </div>
 
-            {correctCount >= 3 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+            {correctCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem'}}>
                     <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You escaped!</div>
                     <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Put your <img src={Gold} style={{height: '1.5rem'}} /> in the bank.</div>
@@ -85,8 +85,8 @@ const Escape = () => {
                 </div>
             </div>}
 
-            {incorrectCount >= 3 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem'}}>
+            {incorrectCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+                <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem', width: '30rem', maxWidth: '100%'}}>
                     <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Uh oh!</div>
                     <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You got caught. Better cough up <img src={Gold} style={{height: '1.5rem'}} /> your new "associate's" cut.</div>
                     <Link to="/">
