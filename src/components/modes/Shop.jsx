@@ -59,7 +59,7 @@ const Shop = () => {
     return (
         <>
             <WinningModal show={showWinningModal} onClose={() => setShowWinningModal(false)} />
-            <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', height: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
+            <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', minHeight: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <Link style={{ padding: '3rem' }} to="/">
                         <Button onClick={() => {}}>

@@ -61,7 +61,7 @@ const Theft = () => {
     
     const handleAddClick = () => {
         if (Math.random() > getPercentage()) {
-            navigator.vibrate(50)
+            navigator.vibrate(30)
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
             setGoldCount(goldCount + 1)
         } else {
@@ -90,7 +90,7 @@ const Theft = () => {
     }
 
     return (
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', height: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll'}}>
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', minHeight: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll', paddingBottom: '2rem'}}>
             <Inventory inventoryItems={inventoryItems} />
             <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-around', flexDirection: 'column', alignItems: 'center', backgroundColor: '#ffffff3e', borderRadius: '2rem' }}>
                 <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>This haul</div>

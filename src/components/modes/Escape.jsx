@@ -59,7 +59,7 @@ const Escape = () => {
 
 
     return (
-        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundImage: `url(${Background})`, overflow: 'scroll', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
+        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, overflow: 'scroll', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
             <div style={{ padding: '1rem', backgroundColor: '#ffffff7e', borderRadius: '2rem', width: '35rem', maxWidth: '100%', maxHeight: '100%', overflow: 'scroll' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', padding: '0.25rem' }}>
                     <div style={{ fontSize: '5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Escape</div>
