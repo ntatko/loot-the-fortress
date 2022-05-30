@@ -61,11 +61,10 @@ const Theft = () => {
     
     const handleAddClick = () => {
         if (Math.random() > getPercentage()) {
-            navigator.vibrate(30)
+            navigator.vibrate(50)
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
             setGoldCount(goldCount + 1)
         } else {
-            navigator.vibrate([300, 100, 300])
             setHistory([...history, {message: 'failure', count: 1, bagType: bagType, action: 'bag burst!'}])
             setGoldCount(1)
             updateInventory(bagType, -1)
