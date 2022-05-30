@@ -50,13 +50,14 @@ const Shop = () => {
     }
 
     const buyItem = (type) => {
+        navigator.vibrate(100)
         updateInventory(type, 1, costs[type])
     }
 
     return (
         <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', height: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Link style={{ margin: '3rem' }} to="/">
+                <Link style={{ padding: '3rem' }} to="/">
                     <Button onClick={() => {}}>
                         Back to the Fortress
                     </Button>

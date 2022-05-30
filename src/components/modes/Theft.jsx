@@ -65,6 +65,7 @@ const Theft = () => {
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
             setGoldCount(goldCount + 1)
         } else {
+            navigator.vibrate([150, 30, 150])
             setHistory([...history, {message: 'failure', count: 1, bagType: bagType, action: 'bag burst!'}])
             setGoldCount(1)
             updateInventory(bagType, -1)
