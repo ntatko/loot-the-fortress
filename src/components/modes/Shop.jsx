@@ -7,6 +7,7 @@ import Briefcase from '../../assets/briefcase.svg'
 import Crown from '../../assets/crown.svg'
 import Button from "../core/Button"
 import { Link } from "react-router-dom"
+import WinningModal from "../common/WinningModal"
 
 const costs = {
     [BURLAP_SACK]: 3,
@@ -31,12 +32,13 @@ const getInventoryImage = (item) => {
 const Shop = () => {
 
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
+    const [ showWinningModal, setShowWinningModal ] = useState(false)
     const currentGold = inventoryItems.find(item => item.type === GOLD).count
 
     const updateInventory = (type, change, cost) => {
         const newInventory = [...inventoryItems]
         const index = newInventory.findIndex(item => item.type === type)
-        console.log(index)
+
         if (index === -1) {
             newInventory.push({ type, count: change })
         } else {
@@ -55,21 +57,27 @@ const Shop = () => {
     }
 
     return (
-        <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', height: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <Link style={{ padding: '3rem' }} to="/">
-                    <Button onClick={() => {}}>
-                        Back to the Fortress
-                    </Button>
-                </Link>
-                <Inventory inventoryItems={inventoryItems} />
+        <>
+            <WinningModal show={showWinningModal} onClose={() => setShowWinningModal(false)} />
+            <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', height: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Link style={{ padding: '3rem' }} to="/">
+                        <Button onClick={() => {}}>
+                            Back to the Fortress
+                        </Button>
+                    </Link>
+                    <Inventory inventoryItems={inventoryItems} />
+                </div>
+                <div style={{ overflow: 'scroll', width: '25rem' }}>
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => {
+                        buyItem(CROWN)
+                        setShowWinningModal(true)
+                    }} type={CROWN} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} type={BURLAP_SACK} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
+                </div>
             </div>
-            <div style={{ overflow: 'scroll', width: '25rem' }}>
-                <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(CROWN)} type={CROWN} />
-                <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} type={BURLAP_SACK} />
-                <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
-            </div>
-        </div>
+        </>
     )
 
 }
