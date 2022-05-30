@@ -63,9 +63,6 @@ const Escape = () => {
             <div style={{ padding: '1rem', backgroundColor: '#ffffff7e', borderRadius: '2rem', width: '35rem', maxWidth: '100%', maxHeight: '100%', overflow: 'scroll' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', padding: '0.25rem' }}>
                     <div style={{ fontSize: '5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Escape</div>
-                    <div>
-                        <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Correct: {correctCount}/3</div>
-                    </div>
                 </div>
 
                 {renderQuestion()}
