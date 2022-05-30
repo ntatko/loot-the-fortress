@@ -41,7 +41,6 @@ const HomeMenu = () => {
             </Link>
             <Inventory inventoryItems={inventoryItems} />
             <InstructionModal show={firstTime} onClose={() => {
-                console.log("this be happening")
                 setFirstTime(false)
                 localStorage.setItem('firstTime', JSON.stringify(false))
             }} />

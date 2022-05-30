@@ -11,7 +11,7 @@ import WinningModal from "../common/WinningModal"
 
 const costs = {
     [BURLAP_SACK]: 3,
-    [LEATHER_SACK]: 5,
+    [LEATHER_SACK]: 8,
     [CROWN]: 100,
 }
 const getInventoryImage = (item) => {
