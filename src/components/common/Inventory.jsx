@@ -39,7 +39,7 @@ const Inventory = (props) => {
 
 Inventory.propTypes = {
     inventoryItems: PropTypes.arrayOf({
-        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired,
         count: PropTypes.number.isRequired,
     }).isRequired,
 }

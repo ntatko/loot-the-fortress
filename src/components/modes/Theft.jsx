@@ -7,6 +7,7 @@ import MoneyBag from '../../assets/money-bag.svg'
 import { Link } from 'react-router-dom'
 import Inventory, { BURLAP_SACK, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
+import FadeOutAction from '../common/FadeOutAction'
 
 const Theft = () => {
 
@@ -78,6 +79,9 @@ const Theft = () => {
                 }
             }
         }
+        setTimeout(() => {
+            setHistory(thisHistory => thisHistory.slice(1))
+        }, 2000)
     }
 
     const handleStopClick = () => {
@@ -89,6 +93,19 @@ const Theft = () => {
         }
     }
 
+    const getActionDisplay = (action) => {
+        switch (action.message) {
+            case 'success':
+                return '+1'
+            case 'failure':
+                return 'Bag Burst!'
+            case 'saved':
+                return 'Saved'
+            default:
+                return '?'
+        }
+    }
+
     return (
         <div style={{ display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', minHeight: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll', paddingBottom: '2rem'}}>
             <Inventory inventoryItems={inventoryItems} />
@@ -97,6 +114,11 @@ const Theft = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '10rem' }}>
                     <img style={{ height: '3rem' }} src={GoldCoins} alt="Gold Coins" />
                     <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{goldCount}</div>
+                </div>
+                <div style={{ display: 'flex', height: '1rem', overflow: 'show', flexDirection: 'row' }}>
+                    {history.map(action => (
+                        <FadeOutAction key={action.message + action.count} onExit={() => setHistory(thisHistory => thisHistory.slice(1))}><div style={{ color: action.message === 'failure' ? 'red' : 'black', fontSize: '1rem', fontFamily: 'Syne Mono', monospace: 'true', transition: 'ease-out 2s' }}>{getActionDisplay(action)}</div></FadeOutAction>
+                    ))}
                 </div>
                 <div style={{display: 'flex'}}>
                     <Button disabled={!hasBags} onClick={handleAddClick}>
