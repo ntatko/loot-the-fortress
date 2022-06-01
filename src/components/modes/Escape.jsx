@@ -61,9 +61,7 @@ const Escape = () => {
     return (
         <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, overflow: 'scroll', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
             <div style={{ padding: '1rem', backgroundColor: '#ffffff7e', borderRadius: '2rem', width: '35rem', maxWidth: '100%', maxHeight: '100%', overflow: 'scroll' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', padding: '0.25rem' }}>
-                    <div style={{ fontSize: '5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Escape</div>
-                </div>
+                <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Escape with <img style={{ height: '2.25rem' }} src={Gold} alt={"stuff"} /> {location.state?.amount || 0}</div>
 
                 {renderQuestion()}
             </div>
@@ -71,7 +69,7 @@ const Escape = () => {
             {correctCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem'}}>
                     <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You escaped!</div>
-                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Put your <img src={Gold} style={{height: '1.5rem'}} /> in the bank.</div>
+                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Put your <img src={Gold} style={{height: '1.5rem'}} />{location.state?.amount || 0} in the bank.</div>
                     <Link to="/">
                         <Button onClick={() => {
                             updateInventory(GOLD, location.state?.amount || 0)
@@ -85,7 +83,7 @@ const Escape = () => {
             {incorrectCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
                 <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem', width: '30rem', maxWidth: '100%'}}>
                     <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Uh oh!</div>
-                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You got caught. Better cough up <img src={Gold} style={{height: '1.5rem'}} /> your new "associate's" cut.</div>
+                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You got caught. Better cough up <img src={Gold} style={{height: '1.5rem'}} /> your new "associate's" cut (<img src={Gold} style={{height: '1.5rem'}} /> {location.state?.amount ? Math.floor(location.state?.amount/2) : 0}).</div>
                     <Link to="/">
                         <Button onClick={() => {
                             updateInventory(GOLD, Math.floor(location.state?.amount/2) || 0)
