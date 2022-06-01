@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Button from '../core/Button'
 import GoldCoins from '../../assets/gold_coins.svg'
 import Background from '../../assets/fortress-inside.png'
-import Briefcase from '../../assets/briefcase.svg'
-import MoneyBag from '../../assets/money-bag.svg'
 import { Link } from 'react-router-dom'
 import Inventory, { BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
@@ -80,6 +78,8 @@ const Theft = () => {
                     setBagType(BURLAP_SACK)
                 } else if (inventoryItems.find(e => e.type === LEATHER_SACK)?.count > 0) {
                     setBagType(LEATHER_SACK)
+                } else if (inventoryItems.find(e => e.type === BACKPACK)?.count > 0) {
+                    setBagType(BACKPACK)
                 }
             }
         }
