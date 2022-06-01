@@ -1,10 +1,7 @@
 import React, {useState} from "react"
 import ShopBackground from '../../assets/shop-inside.png'
-import Inventory, { BURLAP_SACK, CROWN, GOLD, LEATHER_SACK } from "../common/Inventory"
-import MoneyBag from '../../assets/money-bag.svg'
+import Inventory, { BACKPACK, BURLAP_SACK, CROWN, getInventoryImage, GOLD, IPHONE, LEATHER_SACK, WALES } from "../common/Inventory"
 import Coins from '../../assets/gold_coins.svg'
-import Briefcase from '../../assets/briefcase.svg'
-import Crown from '../../assets/crown.svg'
 import Button from "../core/Button"
 import { Link } from "react-router-dom"
 import WinningModal from "../common/WinningModal"
@@ -13,20 +10,9 @@ const costs = {
     [BURLAP_SACK]: 3,
     [LEATHER_SACK]: 8,
     [CROWN]: 100,
-}
-const getInventoryImage = (item) => {
-    switch (item) {
-        case GOLD:
-            return Coins
-        case BURLAP_SACK:
-            return MoneyBag
-        case LEATHER_SACK:
-            return Briefcase
-        case CROWN:
-            return Crown
-        default:
-            return 'https://i.imgur.com/g9ZQ2nZ.png'
-    }
+    [BACKPACK]: 30,
+    [IPHONE]: 3000,
+    [WALES]: 1000000
 }
 
 const Shop = () => {
@@ -56,6 +42,8 @@ const Shop = () => {
         updateInventory(type, 1, costs[type])
     }
 
+    const hasWon = inventoryItems.find(item => item.type === CROWN)?.count > 0 ?? false
+
     return (
         <>
             <WinningModal show={showWinningModal} onClose={() => setShowWinningModal(false)} />
@@ -75,6 +63,11 @@ const Shop = () => {
                     }} type={CROWN} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} type={BURLAP_SACK} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
+                    {hasWon && <>
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} type={BACKPACK} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} type={IPHONE} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} type={WALES} />
+                    </>}
                 </div>
             </div>
         </>

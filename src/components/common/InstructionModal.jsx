@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import Button from "../core/Button"
-import { BURLAP_SACK, LEATHER_SACK } from "./Inventory"
+import { BACKPACK, BURLAP_SACK, getInventoryImage, LEATHER_SACK } from "./Inventory"
 import MoneyBag from '../../assets/money-bag.svg'
 import Coins from '../../assets/gold_coins.svg'
 import Briefcase from '../../assets/briefcase.svg'
@@ -38,6 +38,11 @@ const InstructionModal = (props) => {
                                 <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}><b>{LEATHER_SACK}</b></div>
                                 <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>1 in 16 chance</div>
                             </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                <img style={{ height: '2.5rem' }} src={getInventoryImage(BACKPACK)} alt={props.type} />
+                                <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}><b>{BACKPACK}</b></div>
+                                <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>1 in 64 chance</div>
+                            </div>
                             <p>
                                 If you break a sack, you lose the gold you put in it.
                                 But don't worry! You can always buy a new sack to keep your gold. If you have enough gold, that is.
@@ -46,6 +51,9 @@ const InstructionModal = (props) => {
                                 If you're escaping the fortress with <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> loot, you'll need to find the <img style={{ height: '1.5rem' }} src={Key} alt={props.type} /> <b>key</b>.
                                 You'll be presented with a <b>trivia question</b>. If you answer correctly, you keep your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> money.
                                 If you don't, you'll have to pay a <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> bribe to get out of the fortress (half your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> loot, rounded up).
+                            </p>
+                            <p>
+                                <b>Oh, also...</b> when you think you've won, be sure to check the store out again. You might find more interesting stuff there.
                             </p>
                             <p>
                                 <b>Good luck!</b>

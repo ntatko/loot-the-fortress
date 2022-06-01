@@ -5,7 +5,7 @@ import Background from '../../assets/fortress-inside.png'
 import Briefcase from '../../assets/briefcase.svg'
 import MoneyBag from '../../assets/money-bag.svg'
 import { Link } from 'react-router-dom'
-import Inventory, { BURLAP_SACK, GOLD, LEATHER_SACK } from '../common/Inventory'
+import Inventory, { BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
 import FadeOutAction from '../common/FadeOutAction'
 
@@ -14,11 +14,11 @@ const Theft = () => {
     const [ goldCount, setGoldCount ] = useState(0)
     const [ bagType, setBagType ] = useState(BURLAP_SACK)
     const [ history, setHistory ] = useState([])
-    const [ highScore, setHighScore ] = useState(JSON.parse(localStorage.getItem('highScore')) || {[BURLAP_SACK]: 0, [LEATHER_SACK]: 0})
+    const [ highScore, setHighScore ] = useState(JSON.parse(localStorage.getItem('highScore')) || {[BURLAP_SACK]: 0, [LEATHER_SACK]: 0, [BACKPACK]: 0})
 
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
 
-    const hasBags = inventoryItems.some(e => (e.type === BURLAP_SACK || e.type === LEATHER_SACK) && e.count > 0)
+    const hasBags = inventoryItems.some(e => (e.type === BURLAP_SACK || e.type === LEATHER_SACK || e.type === BACKPACK) && e.count > 0)
 
     const updateInventory = (type, change) => {
         const newInventory = [...inventoryItems]
@@ -41,10 +41,12 @@ const Theft = () => {
             return 0
         }
         switch (bagType) {
-            case 'burlap sack':
+            case BURLAP_SACK:
                 return 0.2
-            case 'leather sack':
+            case LEATHER_SACK:
                 return 0.0625
+            case BACKPACK:
+                return 0.015625
             default:
                 return 0.5
         }
@@ -56,6 +58,8 @@ const Theft = () => {
                 setBagType(BURLAP_SACK)
             } else if (inventoryItems.find(e => e.type === LEATHER_SACK)?.count > 0) {
                 setBagType(LEATHER_SACK)
+            } else if (inventoryItems.find(e => e.type === BACKPACK)?.count > 0) {
+                setBagType(BACKPACK)
             }
         }
     }, [])
@@ -87,7 +91,7 @@ const Theft = () => {
     const handleStopClick = () => {
         setHistory([...history, {message: 'saved', count: goldCount, bagType: bagType, action: 'stop'}])
 
-        if (highScore[bagType] < goldCount) {
+        if (!highScore[bagType] || highScore[bagType] < goldCount) {
             localStorage.setItem('highScore', JSON.stringify({...highScore, [bagType]: goldCount}))
             setHighScore({...highScore, [bagType]: goldCount})
         }
@@ -134,6 +138,7 @@ const Theft = () => {
                 <div style={{ display: 'flex' }}>
                     <BagSelector bagType={BURLAP_SACK} setBagType={() => setBagType(BURLAP_SACK)} count={inventoryItems.find(e => e.type === BURLAP_SACK)?.count || 0} isSelected={bagType === BURLAP_SACK} disabled={goldCount != 0} />
                     <BagSelector bagType={LEATHER_SACK} setBagType={() => setBagType(LEATHER_SACK)} count={inventoryItems.find(e => e.type === LEATHER_SACK)?.count || 0} isSelected={bagType === LEATHER_SACK} disabled={goldCount != 0} />
+                    <BagSelector bagType={BACKPACK} setBagType={() => setBagType(BACKPACK)} count={inventoryItems.find(e => e.type === BACKPACK)?.count || 0} isSelected={bagType === BACKPACK} disabled={goldCount != 0} />
                 </div>
             </div>
             {localStorage.getItem('isDeveloper') === 'true' && (
@@ -150,19 +155,6 @@ export default Theft
 
 const BagSelector = ({ bagType, setBagType, count, isSelected, disabled }) => {
 
-    const getInventoryImage = () => {
-        switch (bagType) {
-            case GOLD:
-                return GoldCoins
-            case BURLAP_SACK:
-                return MoneyBag
-            case LEATHER_SACK:
-                return Briefcase
-            default:
-                return 'https://i.imgur.com/g9ZQ2nZ.png'
-        }
-    }
-
     const handleClick = () => {
         if (count > 0 && !isSelected && !disabled) {
             setBagType()
@@ -171,7 +163,7 @@ const BagSelector = ({ bagType, setBagType, count, isSelected, disabled }) => {
 
     return (
         <div onClick={handleClick} style={{ transition: 'all .2s', borderRadius: '1rem', width: '4rem', height: '4rem', display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', opacity: count > 0 ? 1 : 0.5, border: isSelected ? '3px black solid' : 'none', margin: isSelected ? -3 : 0 }}>
-            <img style={{ height: '3rem' }} src={getInventoryImage()} alt="Burlap Sack" />
+            <img style={{ height: '3rem' }} src={getInventoryImage(bagType)} alt="Burlap Sack" />
         </div>
     )
 }
