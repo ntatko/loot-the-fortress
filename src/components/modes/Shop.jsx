@@ -63,8 +63,8 @@ const Shop = () => {
                     }} type={CROWN} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} type={BURLAP_SACK} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} type={BACKPACK} />
                     {hasWon && <>
-                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} type={BACKPACK} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} type={IPHONE} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} type={WALES} />
                     </>}
