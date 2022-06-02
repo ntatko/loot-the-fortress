@@ -7,11 +7,11 @@ const LoserModal = (props) => {
     return (
         props.show
             ? (
-                <div onClick={() => props.onClose()} style={{ zIndex: 2, position: 'absolute', width: '100%', height: '100%', backgroundColor: '#464646b0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '40rem', height: '30rem', backgroundColor: '#ffffff', padding: '2rem', borderRadius: '2rem', overflow: 'scroll' }}>
-                        <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You Lost</div>
+                <div onClick={() => props.onClose()} className="modal-container" >
+                    <div onClick={(e) => e.stopPropagation()} className="modal-content">
+                        <div className="modal-header text">You Lost</div>
 
-                        <div style={{ fontSize: '1.2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>
+                        <div className="text" style={{ fontSize: '1.2rem' }}>
                             <p>
                                 Thieving isn't for everyone. Better luck next time!
                             </p>

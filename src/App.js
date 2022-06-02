@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import './styles.css';
 import HomeMenu from './components/modes/HomeMenu';
 import Shop from './components/modes/Shop';
 import Theft from './components/modes/Theft';

@@ -4,12 +4,14 @@ import Button from '../core/Button'
 import Background from '../../assets/castle-background.png'
 import Inventory, { BURLAP_SACK, CROWN, GOLD } from '../common/Inventory'
 import InstructionModal from '../common/InstructionModal'
+import StartOverModal from '../common/StartOverModal'
 
 const HomeMenu = () => {
 
     const onClick = () => {}
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
     const [ firstTime, setFirstTime ] = useState(JSON.parse(localStorage.getItem('firstTime')))
+    const [ quitConfirm, setQuitConfirm ] = useState(false)
 
     const updateInventory = (type, change) => {
         const newInventory = [...inventoryItems]
@@ -47,9 +49,11 @@ const HomeMenu = () => {
             <Button onClick={() => setFirstTime(true)}>Instructions</Button>
             { inventoryItems.find(item => item.type === CROWN) && inventoryItems.find(item => item.type === CROWN).count > 0 && (
                 <Button onClick={() => {
-                    localStorage.setItem('inventoryItems', null)
-                    window.location.reload()
+                    setQuitConfirm(true)
                 }}>Start Over</Button>
+            )}
+            { quitConfirm && (
+                <StartOverModal onClose={() => setQuitConfirm(false)} />
             )}
         </div>
     )

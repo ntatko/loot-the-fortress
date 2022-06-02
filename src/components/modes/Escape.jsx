@@ -6,7 +6,7 @@ import Key from '../../assets/key.svg'
 import Gold from '../../assets/gold_coins.svg'
 import Button from '../core/Button'
 import Background from '../../assets/escape-background.png'
-import { BURLAP_SACK, GOLD } from '../common/Inventory'
+import { BURLAP_SACK, getInventoryImage, GOLD, IPHONE } from '../common/Inventory'
 
 const Escape = () => {
     const location = useLocation()
@@ -57,6 +57,7 @@ const Escape = () => {
         )
     }
 
+    const hasIphone = inventoryItems.find(item => item.type === IPHONE)?.count > 0 ?? false
 
     return (
         <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, overflow: 'scroll', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
@@ -66,10 +67,10 @@ const Escape = () => {
                 {renderQuestion()}
             </div>
 
-            {correctCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem'}}>
-                    <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You escaped!</div>
-                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Put your <img src={Gold} style={{height: '1.5rem'}} />{location.state?.amount || 0} in the bank.</div>
+            {correctCount >= 1 && <div className='modal-container'>
+                <div className='modal-content'>
+                    <div className='modal-header text'>You escaped!</div>
+                    <div className="text" style={{ fontSize: '1.5rem' }}>Put your <img src={Gold} style={{height: '1.5rem'}} />{location.state?.amount || 0} in the bank.</div>
                     <Link to="/">
                         <Button onClick={() => {
                             updateInventory(GOLD, location.state?.amount || 0)
@@ -80,16 +81,23 @@ const Escape = () => {
                 </div>
             </div>}
 
-            {incorrectCount >= 1 && <div style={{ position: 'absolute', width: '100%', height: '100%', backgroundColor: '#333333a3', zIndex: 5, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                <div style={{ padding: '2rem', backgroundColor: '#ffffff', borderRadius: '2rem', width: '30rem', maxWidth: '100%'}}>
-                    <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Uh oh!</div>
-                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>You got caught. Better cough up <img src={Gold} style={{height: '1.5rem'}} /> your new "associate's" cut (<img src={Gold} style={{height: '1.5rem'}} /> {location.state?.amount ? Math.floor(location.state?.amount/2) : 0}).</div>
+            {incorrectCount >= 1 && !hasIphone && <div className='modal-container'>
+                <div className='modal-content'>
+                    <div className='modal-header text'>Uh oh!</div>
+                    <div className='text' style={{ fontSize: '1.5rem' }}>You got caught. Better cough up <img src={Gold} style={{height: '1.5rem'}} /> your new "associate's" cut (<img src={Gold} style={{height: '1.5rem'}} /> {location.state?.amount ? Math.floor(location.state?.amount/2) : 0}).</div>
                     <Link to="/">
-                        <Button onClick={() => {
-                            updateInventory(GOLD, Math.floor(location.state?.amount/2) || 0)
-                        }}>
+                        <Button onClick={() => updateInventory(GOLD, Math.floor(location.state?.amount/2) || 0)}>
                             Pay them off
                         </Button>
+                    </Link>
+                </div>
+            </div>}
+            { incorrectCount >= 1 && hasIphone && <div className='modal-container'>
+                <div className='modal-content'>
+                    <div className='modal-header text'>Just phoning it in</div>
+                    <div className='text' style={{ fontSize: '1.5rem' }}>You got caught, but clearly rules don't apply to people who <b>spend <i>that much</i></b> on <img src={getInventoryImage(IPHONE)} style={{height: '1.5rem'}} /> apples. You can keep your dirty money (<img src={Gold} style={{height: '1.5rem'}} /> {location.state?.amount ? Math.floor(location.state?.amount/2) : 0}). Just ask Siri for the answer next time.</div>
+                    <Link to="/">
+                        <Button onClick={() => updateInventory(GOLD, Math.floor(location.state?.amount/2) || 0)}>🤷 Whatever</Button>
                     </Link>
                 </div>
             </div>}

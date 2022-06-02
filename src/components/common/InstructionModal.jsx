@@ -13,11 +13,11 @@ const InstructionModal = (props) => {
     return (
         props.show
             ? (
-                <div onClick={() => props.onClose()} style={{ zIndex: 2, position: 'absolute', width: '100%', height: '100%', backgroundColor: '#464646b0', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '40rem', height: '30rem', maxWidth: '100%', maxHeight: '100%', backgroundColor: '#ffffff', padding: '2rem', borderRadius: '2rem', overflow: 'scroll', margin: '.5rem' }}>
-                        <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>How to play</div>
+                <div onClick={() => props.onClose()} className="modal-container">
+                    <div onClick={(e) => e.stopPropagation()} className="modal-content">
+                        <div className="modal-header text">How to play</div>
 
-                        <div style={{ fontSize: '1.2rem', fontFamily: 'Syne Mono', monospace: 'true', overflow: 'scroll' }}>
+                        <div className="text" style={{ fontSize: '1.2rem', overflow: 'scroll' }}>
                             <p>
                                 The goal of the game is to collect as much gold as possible.
                                 Technically, you win when you have enough gold to buy a <img style={{ height: '1.5rem' }} src={Crown} alt={"stuff"} /> crown.
