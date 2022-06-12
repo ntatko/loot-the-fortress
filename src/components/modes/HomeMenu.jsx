@@ -5,7 +5,7 @@ import Background from '../../assets/castle-background.png'
 import Inventory, { BURLAP_SACK, CROWN, GOLD } from '../common/Inventory'
 import InstructionModal from '../common/InstructionModal'
 import StartOverModal from '../common/StartOverModal'
-import { useMatomo } from '@datapunt/matomo-tracker-react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const HomeMenu = () => {
 

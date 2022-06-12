@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import Inventory, { ACCOMPLICE, BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
 import FadeOutAction from '../common/FadeOutAction'
-import { useMatomo } from '@datapunt/matomo-tracker-react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const Theft = () => {
 

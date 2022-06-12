@@ -7,7 +7,7 @@ import Gold from '../../assets/gold_coins.svg'
 import Button from '../core/Button'
 import Background from '../../assets/escape-background.png'
 import { BURLAP_SACK, getInventoryImage, GOLD, IPHONE } from '../common/Inventory'
-import { useMatomo } from '@datapunt/matomo-tracker-react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const Escape = () => {
     const location = useLocation()

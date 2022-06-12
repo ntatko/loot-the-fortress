@@ -5,7 +5,7 @@ import Coins from '../../assets/gold_coins.svg'
 import Button from "../core/Button"
 import { Link } from "react-router-dom"
 import WinningModal from "../common/WinningModal"
-import { useMatomo } from '@datapunt/matomo-tracker-react'
+import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const costs = {
     [BURLAP_SACK]: 3,
