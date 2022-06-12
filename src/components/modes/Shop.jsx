@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react"
 import ShopBackground from '../../assets/shop-inside.png'
-import Inventory, { BACKPACK, BURLAP_SACK, CROWN, getInventoryImage, GOLD, IPHONE, LEATHER_SACK, WALES } from "../common/Inventory"
+import Inventory, { ACCOMPLICE, BACKPACK, BURLAP_SACK, CROWN, getInventoryImage, GOLD, IPHONE, LEATHER_SACK, WALES } from "../common/Inventory"
 import Coins from '../../assets/gold_coins.svg'
 import Button from "../core/Button"
 import { Link } from "react-router-dom"
@@ -12,6 +12,7 @@ const costs = {
     [LEATHER_SACK]: 8,
     [CROWN]: 100,
     [BACKPACK]: 30,
+    [ACCOMPLICE]: 1000,
     [IPHONE]: 3000,
     [WALES]: 1000000
 }
@@ -83,6 +84,7 @@ const Shop = () => {
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} type={BACKPACK} />
                     {hasWon && <>
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} type={ACCOMPLICE} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} type={IPHONE} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} type={WALES} />
                     </>}

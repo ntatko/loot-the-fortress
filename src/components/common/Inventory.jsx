@@ -8,6 +8,7 @@ import InventoryItem from './InventoryItem'
 import iphone from '../../assets/iphone.svg'
 import backpack from '../../assets/backpack.svg'
 import wales from '../../assets/wales.svg'
+import accomplice from '../../assets/accomplice.svg'
 
 export const GOLD = 'gold'
 export const BURLAP_SACK = 'burlap sack'
@@ -16,6 +17,7 @@ export const CROWN = 'crown'
 export const IPHONE = 'iphone'
 export const BACKPACK = 'backpack'
 export const WALES = 'wales'
+export const ACCOMPLICE = 'accomplice'
 
 export const getInventoryImage = (item) => {
     switch (item) {
@@ -31,6 +33,8 @@ export const getInventoryImage = (item) => {
             return iphone
         case BACKPACK:
             return backpack
+        case ACCOMPLICE:
+            return accomplice
         case WALES:
             return wales
         default:

@@ -3,7 +3,7 @@ import Button from '../core/Button'
 import GoldCoins from '../../assets/gold_coins.svg'
 import Background from '../../assets/fortress-inside.png'
 import { Link } from 'react-router-dom'
-import Inventory, { BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
+import Inventory, { ACCOMPLICE, BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
 import FadeOutAction from '../common/FadeOutAction'
 import { useMatomo } from '@datapunt/matomo-tracker-react'
@@ -30,6 +30,7 @@ const Theft = () => {
     }, [])
 
     const hasBags = inventoryItems.some(e => (e.type === BURLAP_SACK || e.type === LEATHER_SACK || e.type === BACKPACK) && e.count > 0)
+    const accompliceCount = inventoryItems.find(e => e.type === ACCOMPLICE)?.count ?? 0
 
     const updateInventory = (type, change) => {
         const newInventory = [...inventoryItems]
@@ -105,9 +106,9 @@ const Theft = () => {
         trackEvent({
             category: 'Theft',
             action: 'escape',
-            name: goldCount
+            name: goldCount*(1 + accompliceCount)
         })
-        setHistory([...history, {message: 'saved', count: goldCount, bagType: bagType, action: 'stop'}])
+        setHistory([...history, {message: 'saved', count: goldCount*(1 + accompliceCount), bagType: bagType, action: 'stop'}])
 
         if (!highScore[bagType] || highScore[bagType] < goldCount) {
             localStorage.setItem('highScore', JSON.stringify({...highScore, [bagType]: goldCount}))
@@ -128,6 +129,7 @@ const Theft = () => {
         }
     }
 
+
     return (
         <div style={{ display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', minHeight: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll', paddingBottom: '2rem'}}>
             <Inventory inventoryItems={inventoryItems} />
@@ -136,6 +138,7 @@ const Theft = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '10rem' }}>
                     <img style={{ height: '3rem' }} src={GoldCoins} alt="Gold Coins" />
                     <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{goldCount}</div>
+                    {accompliceCount > 0 && <div style={{ fontSize: '1rem', fontFamily: 'Syne Mono', monospace: 'true', width: '5rem' }}>{`+${accompliceCount}`}<img style={{ height: '1rem' }} src={getInventoryImage(ACCOMPLICE)} alt="Gold Coins" />{`=${(1 + accompliceCount)*goldCount}`}</div>}
                 </div>
                 <div style={{ display: 'flex', height: '1rem', overflow: 'show', flexDirection: 'row' }}>
                     {history.map(action => (
@@ -146,7 +149,7 @@ const Theft = () => {
                     <Button disabled={!hasBags} onClick={handleAddClick}>
                         Loot
                     </Button>
-                    <Link to={goldCount === 0 ? "/" : "/escape"} state={{amount: goldCount}}>
+                    <Link to={goldCount === 0 ? "/" : "/escape"} state={{amount: goldCount*(1 + accompliceCount)}}>
                         <Button onClick={handleStopClick}>
                             Escape
                         </Button>
