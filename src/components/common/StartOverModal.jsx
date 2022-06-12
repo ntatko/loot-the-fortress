@@ -18,6 +18,7 @@ const StartOverModal = (props) => {
           <Button
             className="btn btn-danger"
             onClick={() => {
+                window._paq.push(['trackEvent', 'Home', 'startOver']);
                 localStorage.setItem('inventoryItems', null)
                 window.location.reload()
             }}

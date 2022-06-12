@@ -11,7 +11,7 @@ function App() {
   const instance = createInstance({
     urlBase: 'https://analytics.cloud.zipidy.org/',
     trackerUrl: 'https://analytics.cloud.zipidy.org/matomo.php',
-    siteId: 2,
+    siteId: '2',
     linkTracking: false,
     heartBeat: { // optional, enabled by default
       active: true, // optional, default value: true

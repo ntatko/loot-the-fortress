@@ -7,7 +7,7 @@ import Gold from '../../assets/gold_coins.svg'
 import Button from '../core/Button'
 import Background from '../../assets/escape-background.png'
 import { BURLAP_SACK, getInventoryImage, GOLD, IPHONE } from '../common/Inventory'
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
+// import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const Escape = () => {
     const location = useLocation()
@@ -15,17 +15,19 @@ const Escape = () => {
     const [correctCount, setCorrectCount] = useState(0)
     const [incorrectCount, setIncorrectCount] = useState(0)
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
-    const { trackPageView, trackEvent } = useMatomo()
+    // const { trackPageView, trackEvent } = useMatomo()
 
     useEffect(() => {
-        trackPageView({
-            documentTitle: 'Escape',
-            href: '/escape',
-            customDimensions: {
-                id: 1,
-                value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
-            }
-        })
+        // trackPageView({
+        //     documentTitle: 'Escape',
+        //     href: '/escape',
+        //     customDimensions: {
+        //         id: 1,
+        //         value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
+        //     }
+        // })
+        window._paq.push(['setDocumentTitle', 'escape']);
+        window._paq.push(['trackPageView']);
     }, [])
 
     const updateInventory = (type, change) => {
@@ -46,10 +48,11 @@ const Escape = () => {
                 <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{question.question}</div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <TriviaAnswerButton onClick={() => {
-                        trackEvent({
-                            category: 'Escape',
-                            action: 'correct'
-                        })
+                        // trackEvent({
+                        //     category: 'Escape',
+                        //     action: 'correct'
+                        // })
+                        window._paq.push(['trackEvent', 'escape', 'correct']);
                         setCorrectCount(correctCount + 1)
                         setQuestion(getTriviaQuestion())
                     }}>
@@ -60,10 +63,11 @@ const Escape = () => {
                     </TriviaAnswerButton>
                     {question.incorrect.map(answer => (
                         <TriviaAnswerButton onClick={() => {
-                            trackEvent({
-                                category: 'Escape',
-                                action: 'incorrect'
-                            })
+                            // trackEvent({
+                            //     category: 'Escape',
+                            //     action: 'incorrect'
+                            // })
+                            window._paq.push(['trackEvent', 'escape', 'incorrect']);
                             setIncorrectCount(incorrectCount + 1)
                             setQuestion(getTriviaQuestion())
                         }}>

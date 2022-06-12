@@ -5,7 +5,7 @@ import Coins from '../../assets/gold_coins.svg'
 import Button from "../core/Button"
 import { Link } from "react-router-dom"
 import WinningModal from "../common/WinningModal"
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
+// import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const costs = {
     [BURLAP_SACK]: 3,
@@ -21,18 +21,18 @@ const Shop = () => {
 
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
     const [ showWinningModal, setShowWinningModal ] = useState(false)
-    const { trackPageView, trackEvent } = useMatomo()
+    // const { trackPageView, trackEvent } = useMatomo()
     const currentGold = inventoryItems.find(item => item.type === GOLD).count
 
     useEffect(() => {
-        trackPageView({
-            documentTitle: 'Shop',
-            href: '/shop',
-            customDimensions: {
-                id: 1,
-                value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
-            }
-        })
+        // trackPageView({
+        //     documentTitle: 'Shop',
+        //     href: '/shop',
+        //     customDimensions: {
+        //         id: 1,
+        //         value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
+        //     }
+        // })
     }, [])
 
     const updateInventory = (type, change, cost) => {
@@ -52,11 +52,12 @@ const Shop = () => {
     }
 
     const buyItem = (type) => {
-        trackEvent({
-            category: 'Shop',
-            action: 'purchase-event',
-            name: type
-        })
+        // trackEvent({
+        //     category: 'Shop',
+        //     action: 'purchase-event',
+        //     name: type
+        // })
+        window._paq.push(['trackEvent', 'Shop', 'purchase', type])
         navigator.vibrate(100)
         updateInventory(type, 1, costs[type])
     }

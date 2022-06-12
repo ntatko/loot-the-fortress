@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import Inventory, { ACCOMPLICE, BACKPACK, BURLAP_SACK, getInventoryImage, GOLD, LEATHER_SACK } from '../common/Inventory'
 import LoserModal from '../common/LoserModal'
 import FadeOutAction from '../common/FadeOutAction'
-import { useMatomo } from '@jonkoops/matomo-tracker-react'
+// import { useMatomo } from '@jonkoops/matomo-tracker-react'
 
 const Theft = () => {
 
@@ -16,17 +16,18 @@ const Theft = () => {
     const [ highScore, setHighScore ] = useState(JSON.parse(localStorage.getItem('highScore')) || {[BURLAP_SACK]: 0, [LEATHER_SACK]: 0, [BACKPACK]: 0})
 
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
-    const { trackPageView, trackEvent } = useMatomo()
+    // const { trackPageView, trackEvent } = useMatomo()
 
     useEffect(() => {
-        trackPageView({
-            documentTitle: 'Theft',
-            href: '/theft',
-            customDimensions: {
-                id: 1,
-                value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
-            }
-        })
+        // trackPageView({
+        //     documentTitle: 'Theft',
+        //     href: '/theft',
+        //     customDimensions: {
+        //         id: 1,
+        //         value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
+        //     }
+        // })
+        window._paq.push(['trackPageView', 'Theft'])
     }, [])
 
     const hasBags = inventoryItems.some(e => (e.type === BURLAP_SACK || e.type === LEATHER_SACK || e.type === BACKPACK) && e.count > 0)
@@ -83,6 +84,7 @@ const Theft = () => {
             setGoldCount(goldCount + 1)
         } else {
             navigator.vibrate([150, 30, 150])
+            window._paq.push(['trackEvent', 'Theft', 'bag burst', bagType])
             setHistory([...history, {message: 'failure', count: 1, bagType: bagType, action: 'bag burst!'}])
             setGoldCount(1)
             updateInventory(bagType, -1)
@@ -103,11 +105,12 @@ const Theft = () => {
     }
 
     const handleStopClick = () => {
-        trackEvent({
-            category: 'Theft',
-            action: 'escape',
-            name: goldCount*(1 + accompliceCount)
-        })
+        // trackEvent({
+        //     category: 'Theft',
+        //     action: 'escape',
+        //     name: goldCount*(1 + accompliceCount)
+        // })
+        window._paq.push(['trackEvent', 'Theft', 'escape', accompliceCount, goldCount*(1 + accompliceCount)])
         setHistory([...history, {message: 'saved', count: goldCount*(1 + accompliceCount), bagType: bagType, action: 'stop'}])
 
         if (!highScore[bagType] || highScore[bagType] < goldCount) {
