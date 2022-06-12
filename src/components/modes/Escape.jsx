@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getTriviaQuestion } from '../../assets/fortressTrivia'
 import TriviaAnswerButton from '../core/TriviaAnswerButton'
@@ -7,6 +7,7 @@ import Gold from '../../assets/gold_coins.svg'
 import Button from '../core/Button'
 import Background from '../../assets/escape-background.png'
 import { BURLAP_SACK, getInventoryImage, GOLD, IPHONE } from '../common/Inventory'
+import { useMatomo } from '@datapunt/matomo-tracker-react'
 
 const Escape = () => {
     const location = useLocation()
@@ -14,6 +15,18 @@ const Escape = () => {
     const [correctCount, setCorrectCount] = useState(0)
     const [incorrectCount, setIncorrectCount] = useState(0)
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
+    const { trackPageView, trackEvent } = useMatomo()
+
+    useEffect(() => {
+        trackPageView({
+            documentTitle: 'Escape',
+            href: '/escape',
+            customDimensions: {
+                id: 1,
+                value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
+            }
+        })
+    }, [])
 
     const updateInventory = (type, change) => {
         const newInventory = [...inventoryItems]
@@ -33,6 +46,10 @@ const Escape = () => {
                 <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{question.question}</div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <TriviaAnswerButton onClick={() => {
+                        trackEvent({
+                            category: 'Escape',
+                            action: 'correct'
+                        })
                         setCorrectCount(correctCount + 1)
                         setQuestion(getTriviaQuestion())
                     }}>
@@ -43,6 +60,10 @@ const Escape = () => {
                     </TriviaAnswerButton>
                     {question.incorrect.map(answer => (
                         <TriviaAnswerButton onClick={() => {
+                            trackEvent({
+                                category: 'Escape',
+                                action: 'incorrect'
+                            })
                             setIncorrectCount(incorrectCount + 1)
                             setQuestion(getTriviaQuestion())
                         }}>

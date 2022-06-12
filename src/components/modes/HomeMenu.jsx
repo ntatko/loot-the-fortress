@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../core/Button'
 import Background from '../../assets/castle-background.png'
 import Inventory, { BURLAP_SACK, CROWN, GOLD } from '../common/Inventory'
 import InstructionModal from '../common/InstructionModal'
 import StartOverModal from '../common/StartOverModal'
+import { useMatomo } from '@datapunt/matomo-tracker-react'
 
 const HomeMenu = () => {
 
@@ -12,6 +13,18 @@ const HomeMenu = () => {
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
     const [ firstTime, setFirstTime ] = useState(JSON.parse(localStorage.getItem('firstTime')))
     const [ quitConfirm, setQuitConfirm ] = useState(false)
+    const { trackPageView, trackEvent } = useMatomo()
+
+    useEffect(() => {
+        trackPageView({
+            documentTitle: 'Home',
+            href: '/home',
+            customDimensions: {
+                id: 1,
+                value: `${inventoryItems.map(item => item.type + ":" + item.count).join(',')}`
+            }
+        })
+    }, [])
 
     const updateInventory = (type, change) => {
         const newInventory = [...inventoryItems]
@@ -49,6 +62,10 @@ const HomeMenu = () => {
             <Button onClick={() => setFirstTime(true)}>Instructions</Button>
             { inventoryItems.find(item => item.type === CROWN) && inventoryItems.find(item => item.type === CROWN).count > 0 && (
                 <Button onClick={() => {
+                    trackEvent({
+                        category: 'Home',
+                        action: 'reset-modal'
+                    })
                     setQuitConfirm(true)
                 }}>Start Over</Button>
             )}
