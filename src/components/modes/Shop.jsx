@@ -58,7 +58,9 @@ const Shop = () => {
         //     name: type
         // })
         window._paq.push(['trackEvent', 'Shop', 'purchase', type])
-        navigator.vibrate(100)
+        try {
+            navigator.vibrate(100)
+        } catch {}
         updateInventory(type, 1, costs[type])
     }
 

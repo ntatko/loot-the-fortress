@@ -79,11 +79,15 @@ const Theft = () => {
     
     const handleAddClick = () => {
         if (Math.random() > getPercentage()) {
-            navigator.vibrate(30)
+            try {
+                navigator.vibrate(30)
+            } catch {}
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
             setGoldCount(goldCount + 1)
         } else {
-            navigator.vibrate([150, 30, 150])
+            try {
+                navigator.vibrate([150, 30, 150])
+            } catch {}
             window._paq.push(['trackEvent', 'Theft', 'bag burst', bagType])
             setHistory([...history, {message: 'failure', count: 1, bagType: bagType, action: 'bag burst!'}])
             setGoldCount(1)
