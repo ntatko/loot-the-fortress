@@ -45,7 +45,7 @@ const HomeMenu = () => {
 
 
     return (
-        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', paddingBottom: '2rem'}}>
+        <div style={{ zIndex: -1, position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '100%', backgroundImage: `url(${Background})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', paddingBottom: '2rem'}}>
             <div style={{ fontSize: '4rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Loot the Fortress</div>
             <Link to="/theft">
                 <Button onClick={onClick}>

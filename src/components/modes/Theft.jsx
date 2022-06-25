@@ -138,7 +138,7 @@ const Theft = () => {
 
 
     return (
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', minHeight: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll', paddingBottom: '2rem'}}>
+        <div style={{ zIndex: -1, display: 'flex', width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', backgroundImage: `url(${Background})`, position: 'absolute', minHeight: '100%' , backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', overflow: 'scroll', paddingBottom: '2rem'}}>
             <Inventory inventoryItems={inventoryItems} />
             <div style={{ padding: '1rem', display: 'flex', justifyContent: 'space-around', flexDirection: 'column', alignItems: 'center', backgroundColor: '#ffffff3e', borderRadius: '2rem' }}>
                 <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>This haul</div>
