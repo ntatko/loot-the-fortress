@@ -23,6 +23,7 @@ const Shop = () => {
     const [ showWinningModal, setShowWinningModal ] = useState(false)
     // const { trackPageView, trackEvent } = useMatomo()
     const currentGold = inventoryItems.find(item => item.type === GOLD).count
+    const [ buyMaxItem, setBuyMaxItem ] = useState(null)
 
     useEffect(() => {
         // trackPageView({
@@ -64,10 +65,17 @@ const Shop = () => {
         updateInventory(type, 1, costs[type])
     }
 
+    const onMaxItemConfirm = () => {
+        const count = Math.floor(currentGold / costs[buyMaxItem])
+        updateInventory(buyMaxItem, count, costs[buyMaxItem] * count)
+        setBuyMaxItem(null)
+    }
+
     const hasWon = inventoryItems.find(item => item.type === CROWN)?.count > 0 ?? false
 
     return (
         <>
+            <ConfirmModal item={buyMaxItem} onCancel={() => setBuyMaxItem(null)} onPurchase={onMaxItemConfirm} />
             <WinningModal show={showWinningModal} onClose={() => setShowWinningModal(false)} />
             <div style={{ display: 'flex', position: 'absolute', justifyContent: 'center', minHeight: '100%', width: '100%', backgroundImage: `url(${ShopBackground})`, backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', flexWrap: 'wrap', overflow: 'scroll' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -80,16 +88,18 @@ const Shop = () => {
                 </div>
                 <div style={{ overflow: 'scroll', width: '25rem' }}>
                     <ShopInventoryItem currentGold={currentGold} onClick={() => {
+                        if (!inventoryItems.find(e => e.type === CROWN) || inventoryItems.find(e => e.type === CROWN)?.count == 0) {
+                            setShowWinningModal(true)
+                        }
                         buyItem(CROWN)
-                        setShowWinningModal(true)
-                    }} type={CROWN} />
-                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} type={BURLAP_SACK} />
-                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} type={LEATHER_SACK} />
-                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} type={BACKPACK} />
+                    }} maxClick={() => setBuyMaxItem(CROWN)} type={CROWN} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BURLAP_SACK)} maxClick={() => setBuyMaxItem(BURLAP_SACK)} type={BURLAP_SACK} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} maxClick={() => setBuyMaxItem(LEATHER_SACK)} type={LEATHER_SACK} />
+                    <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} maxClick={() => setBuyMaxItem(BACKPACK)} type={BACKPACK} />
                     {hasWon && <>
-                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} type={ACCOMPLICE} />
-                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} type={IPHONE} />
-                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} type={WALES} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} maxClick={() => setBuyMaxItem(ACCOMPLICE)} type={ACCOMPLICE} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} maxClick={() => setBuyMaxItem(IPHONE)} type={IPHONE} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} maxClick={() => setBuyMaxItem(WALES)} type={WALES} />
                     </>}
                 </div>
             </div>
@@ -111,12 +121,35 @@ const ShopInventoryItem = (props) => {
                 <img style={{ height: '3.5rem' }} src={getInventoryImage(props.type)} alt={props.type} />
                 <div style={{ fontSize: '2.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{props.type}</div>
             </div>
-            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', alignItems: 'center', paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', alignItems: 'center', paddingLeft: '1rem', paddingRight: '1rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '4rem' }}>
                     <img style={{ height: '1.5rem' }} src={Coins} alt={props.type} />
                     <div style={{ fontSize: '2.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{costs[props.type]}</div>
                 </div>
                 <Button disabled={props.currentGold < costs[props.type]} onClick={props.onClick}>Buy</Button>
+                {props.currentGold > costs[props.type] * 2 && <Button disabled={props.currentGold < costs[props.type] * 2} onClick={props.maxClick}>Max</Button>}
+            </div>
+        </div>
+    )
+}
+
+const ConfirmModal = (props) => {
+    if (props.item === null) return null
+
+    return (
+        <div onClick={() => props.onCancel()} className="modal-container">
+            <div onClick={(e) => e.stopPropagation()} className="modal-content">
+                <div className="modal-header text">{`Buy Max ${props.item}`}</div>
+
+                <div className="text" style={{ fontSize: '1.2rem', overflow: 'scroll' }}>
+                    <p>
+                        The goal of the game is to collect as much gold as possible.
+                    </p>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                    <Button onClick={() => props.onPurchase()}>Buy</Button>
+                    <Button onClick={() => props.onCancel()}>Cancel</Button>
+                </div>
             </div>
         </div>
     )
