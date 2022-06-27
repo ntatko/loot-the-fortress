@@ -24,6 +24,7 @@ const Shop = () => {
     // const { trackPageView, trackEvent } = useMatomo()
     const currentGold = inventoryItems.find(item => item.type === GOLD).count
     const [ buyMaxItem, setBuyMaxItem ] = useState(null)
+    const [ showStageThreeModal, setShowStageThreeModal ] = useState(false)
 
     useEffect(() => {
         // trackPageView({
@@ -97,7 +98,12 @@ const Shop = () => {
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(LEATHER_SACK)} maxClick={() => setBuyMaxItem(LEATHER_SACK)} type={LEATHER_SACK} />
                     <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(BACKPACK)} maxClick={() => setBuyMaxItem(BACKPACK)} type={BACKPACK} />
                     {hasWon && <>
-                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} maxClick={() => setBuyMaxItem(ACCOMPLICE)} type={ACCOMPLICE} />
+                        <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} maxClick={() => {
+                            if (inventoryItems.find(i => i.type === WALES) && inventoryItems.find(i => i.type === WALES)?.count > 0) {
+                                
+                            }
+                            setBuyMaxItem(ACCOMPLICE)
+                        }} type={ACCOMPLICE} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(IPHONE)} maxClick={() => setBuyMaxItem(IPHONE)} type={IPHONE} />
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(WALES)} maxClick={() => setBuyMaxItem(WALES)} type={WALES} />
                     </>}
@@ -139,11 +145,11 @@ const ConfirmModal = (props) => {
     return (
         <div onClick={() => props.onCancel()} className="modal-container">
             <div onClick={(e) => e.stopPropagation()} className="modal-content">
-                <div className="modal-header text">{`Buy Max ${props.item}`}</div>
+                <div className="modal-header text"><p>Buy all the <img style={{ height: '2rem'}} src={getInventoryImage(props.item)} /> {props.item}s</p></div>
 
                 <div className="text" style={{ fontSize: '1.2rem', overflow: 'scroll' }}>
                     <p>
-                        The goal of the game is to collect as much gold as possible.
+                        You'll use most of your gold to buy the maximum amount of <img style={{ height: '1rem'}} src={getInventoryImage(props.item)} /> {props.item}s you can.
                     </p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>

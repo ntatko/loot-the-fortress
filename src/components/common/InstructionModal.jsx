@@ -1,7 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from 'prop-types'
 import Button from "../core/Button"
-import { BACKPACK, BURLAP_SACK, getInventoryImage, LEATHER_SACK } from "./Inventory"
+import { ACCOMPLICE, BACKPACK, BURLAP_SACK, getInventoryImage, IPHONE, LEATHER_SACK, WALES, GOLD, CROWN } from "./Inventory"
 import MoneyBag from '../../assets/money-bag.svg'
 import Coins from '../../assets/gold_coins.svg'
 import Briefcase from '../../assets/briefcase.svg'
@@ -9,6 +9,10 @@ import Crown from '../../assets/crown.svg'
 import Key from '../../assets/key.svg'
 
 const InstructionModal = (props) => {
+
+    const [inventoryItems, setInventoryItems] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{ type: BURLAP_SACK, count: 2 }, { type: GOLD, count: 0 }])
+    const hasCrown = inventoryItems.find(item => item.type === CROWN) && inventoryItems.find(item => item.type === CROWN)?.count > 0
+    const hasPopulatedWales = inventoryItems.find(item => item.type === WALES) && inventoryItems.find(item => item.type === WALES)?.count > 0 && inventoryItems.find(item => item.type === ACCOMPLICE) && inventoryItems.find(item => item.type === ACCOMPLICE)?.count >= 3200000
 
     return (
         props.show
@@ -52,12 +56,46 @@ const InstructionModal = (props) => {
                                 You'll be presented with a <b>trivia question</b>. If you answer correctly, you keep your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> money.
                                 If you don't, you'll have to pay a <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> bribe to get out of the fortress (half your <img style={{ height: '1.5rem' }} src={Coins} alt={"stuff"} /> loot, rounded up).
                             </p>
-                            <p>
-                                <b>Oh, also...</b> when you think you've won, be sure to check the store out again. You might find more interesting stuff there.
-                            </p>
-                            <p>
-                                <b>Good luck!</b>
-                            </p>
+                            {!hasCrown && <>
+                                <p>
+                                    <b>Oh, also...</b> when you think you've won, be sure to check the store out again. You might find more interesting stuff there.
+                                </p>
+                                <p>
+                                    <b>Good luck!</b>
+                                </p>
+                            </>}
+                            {hasCrown && <>
+                                <p style={{fontSize: '2rem'}}>
+                                    <b>STAGE TWO:</b>
+                                </p>
+                                <p>
+                                    There are some new items to find in the store that might make your journey a bit more exciting.
+                                </p>
+                                <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                    <img style={{ height: '2.5rem' }} src={getInventoryImage(ACCOMPLICE)} alt={ACCOMPLICE} />
+                                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}><b>{ACCOMPLICE}</b></div>
+                                </div>
+                                <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>A thieving multiplier</div>
+                                <p>Every time you loot, your <strong>accomplice</strong> does, too. Your <b>sack</b> can hold all the extra gold, too, without being any more likely to break. Oh, and you can have an unlimited amount of accomplices, working as multipliers for you while you <b>loot</b>.</p>
+
+                                <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                    <img style={{ height: '2.5rem' }} src={getInventoryImage(IPHONE)} alt={IPHONE} />
+                                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}><b>{IPHONE}</b></div>
+                                </div>
+                                <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>A Googling Device</div>
+                                <p>Every time you answer your trivia question wrong, your <strong>iphone</strong> corrects you, because you should have been googling those anyway.</p>
+
+                                <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                    <img style={{ height: '2.5rem' }} src={getInventoryImage(WALES)} alt={WALES} />
+                                    <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}><b>{WALES}</b></div>
+                                </div>
+                                <div style={{ fontSize: '1.5rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Literally, the country of wales</div>
+                                <p>Yeah, you can buy <strong>wales</strong>. What other game lets you do that?</p>
+                                <br></br>
+                                
+                                <p>Oh, and the population of Wales is 3.2 million people. Just an interesting hint.</p>
+                            </>}
+
                         </div>
 
                         <Button onClick={() => props.onClose()}>I got it</Button>

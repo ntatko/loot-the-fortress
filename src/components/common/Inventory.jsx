@@ -47,7 +47,7 @@ const Inventory = (props) => {
 
     return (
         <div style={{ padding: '1rem', backgroundColor: '#ffffff3e', borderRadius: '2rem', margin: '2rem' }}>
-            <div style={{ fontSize: '3rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Your wares</div>
+            <div style={{ fontSize: '2rem', fontFamily: 'Syne Mono', monospace: 'true' }}>Your wares</div>
             {inventoryItems.map(item => <InventoryItem key={item.type} image={getInventoryImage(item.type)} {...item} />)}
         </div>
     )
