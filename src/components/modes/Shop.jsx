@@ -73,6 +73,7 @@ const Shop = () => {
     }
 
     const hasWon = inventoryItems.find(item => item.type === CROWN)?.count > 0 ?? false
+    const hasWonStageTwo = inventoryItems.find(item => item.type === WALES)?.count > 0 && inventoryItems.find(item => item.type === ACCOMPLICE)?.count >= 3200000
 
     return (
         <>
@@ -100,7 +101,9 @@ const Shop = () => {
                     {hasWon && <>
                         <ShopInventoryItem currentGold={currentGold} onClick={() => buyItem(ACCOMPLICE)} maxClick={() => {
                             if (inventoryItems.find(i => i.type === WALES) && inventoryItems.find(i => i.type === WALES)?.count > 0) {
-                                
+                                if (inventoryItems.find(i => i.type === ACCOMPLICE) && inventoryItems.find(i => i.type === ACCOMPLICE)?.count > 3200000) {
+                                    setShowStageThreeModal(true)
+                                }
                             }
                             setBuyMaxItem(ACCOMPLICE)
                         }} type={ACCOMPLICE} />

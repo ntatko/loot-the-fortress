@@ -14,6 +14,8 @@ const Theft = () => {
     const [ bagType, setBagType ] = useState(BURLAP_SACK)
     const [ history, setHistory ] = useState([])
     const [ highScore, setHighScore ] = useState(JSON.parse(localStorage.getItem('highScore')) || {[BURLAP_SACK]: 0, [LEATHER_SACK]: 0, [BACKPACK]: 0})
+    const [ isPressed, setIsPressed ] = useState(false)
+    const [ intervalId, setIntervalId ] = useState(null)
 
     const [ inventoryItems, setInventoryItems ] = useState(JSON.parse(localStorage.getItem('inventoryItems')) || [{type: BURLAP_SACK, count: 2}, {type: GOLD, count: 0}])
     // const { trackPageView, trackEvent } = useMatomo()
@@ -78,12 +80,15 @@ const Theft = () => {
     }, [])
     
     const handleAddClick = () => {
+        console.log("adding")
         if (Math.random() > getPercentage()) {
             try {
                 navigator.vibrate(30)
             } catch {}
             setHistory([...history, {message: 'success', count: goldCount + 1, bagType: bagType, action: 'add'}])
+            console.log("success")
             setGoldCount(goldCount + 1)
+            console.log("goldCount", goldCount)
         } else {
             try {
                 navigator.vibrate([150, 30, 150])
@@ -123,6 +128,29 @@ const Theft = () => {
         }
     }
 
+    const handlePress = () => {
+        console.log("handling press")
+        setIsPressed(true)
+    }
+
+    useEffect(() => {
+        clearInterval(intervalId)
+        if (isPressed && hasBags) {
+            console.log("is pressed")
+            const interval = setInterval(() => {
+                console.log("interval")
+                handleAddClick()
+            }, 250)
+            setIntervalId(interval)
+        }
+    }, [isPressed, hasBags, goldCount])
+
+    const handleRelease = () => {
+        console.log("handling release")
+        setIsPressed(false)
+        clearInterval(intervalId)
+    }
+
     const getActionDisplay = (action) => {
         switch (action.message) {
             case 'success':
@@ -153,7 +181,7 @@ const Theft = () => {
                     ))}
                 </div>
                 <div style={{display: 'flex'}}>
-                    <Button disabled={!hasBags} onClick={handleAddClick}>
+                    <Button disabled={!hasBags} onClick={handleAddClick} onMouseDown={handlePress} onMouseUp={handleRelease} onTouchStart={handlePress} onTouchEnd={handleRelease} >
                         Loot
                     </Button>
                     <Link to={goldCount === 0 ? "/" : "/escape"} state={{amount: goldCount*(1 + accompliceCount)}}>
@@ -174,7 +202,7 @@ const Theft = () => {
                     {history.map((item) => (<div style={{ fontSize: '0.7rem', fontFamily: 'Syne Mono', monospace: 'true' }}>{`${item.message} - ${item.count} - ${item.bagType} - ${item.action}`}</div>))}
                 </div>
             )}
-            <LoserModal show={!hasBags && inventoryItems.find(e => e.type === GOLD).count + goldCount < 3} />
+            <LoserModal show={!hasBags && inventoryItems.find(e => e.type === GOLD).count + goldCount*(1 + accompliceCount) < 3} />
         </div>
     )
 }
