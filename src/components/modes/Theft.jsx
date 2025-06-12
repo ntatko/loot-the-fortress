@@ -181,7 +181,7 @@ const Theft = () => {
                     ))}
                 </div>
                 <div style={{display: 'flex'}}>
-                    <Button disabled={!hasBags} onClick={handleAddClick} onMouseDown={handlePress} onMouseUp={handleRelease} onTouchStart={handlePress} onTouchEnd={handleRelease} >
+                    <Button disabled={!hasBags} onClick={handleAddClick} onMouseDown={handlePress} onMouseUp={handleRelease} >
                         Loot
                     </Button>
                     <Link to={goldCount === 0 ? "/" : "/escape"} state={{amount: goldCount*(1 + accompliceCount)}}>
