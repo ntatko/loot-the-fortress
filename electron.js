@@ -9,7 +9,7 @@ function createWindow () {
     }
   })
 
-  win.loadURL('http://localhost:3000')
+  win.loadURL('https://loot-the-fortress.quest')
 }
 
 app.whenReady().then(createWindow)
