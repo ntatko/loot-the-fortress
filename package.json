@@ -44,9 +44,11 @@
   },
   "devDependencies": {
     "concurrently": "^7.2.1",
+    "wait-on": "^8.0.3"
+  },
+  "optionalDependencies": {
     "electron": "36.4.0",
     "electron-is-dev": "^2.0.0",
-    "electron-packager": "^17.1.2",
-    "wait-on": "^8.0.3"
+    "electron-packager": "17.1.2"
   }
 }
