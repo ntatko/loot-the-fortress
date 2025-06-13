@@ -1,0 +1,27 @@
+.home-container {
+  z-index: -1;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100%;
+  background-image: url('../../assets/castle-background.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 2rem;
+}
+
+.home-title {
+  font-size: 4rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.gamepad-indicator {
+  color: #bb6108;
+  margin-left: 0.5rem;
+  font-size: 0.8em;
+  vertical-align: super;
+} 

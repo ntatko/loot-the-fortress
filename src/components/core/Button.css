@@ -1,0 +1,26 @@
+.button {
+  transition: all 0.2s;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  background-color: #bb6108;
+  color: #fff;
+  font-family: 'Syne Mono', monospace;
+  font-weight: bold;
+  box-shadow: 5px 10px #888888;
+  text-decoration: none;
+}
+
+.button:hover:not(:disabled) {
+  padding: 0.4rem 0.9rem;
+  margin: 0.6rem;
+  box-shadow: 3px 6px #535353;
+}
+
+.button:disabled {
+  background-color: #98826b;
+  cursor: not-allowed;
+} 

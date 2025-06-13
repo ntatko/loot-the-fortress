@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
+  "main": "electron.js",
   "dependencies": {
-    "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
@@ -21,7 +21,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "concurrently -k \"BROWSER=none npm start\" \"npm:electron\"",
-    "electron": "wait-on tcp:3000 && electron ."
+    "electron": "wait-on tcp:3000 && electron .",
+    "package": "electron-packager ."
   },
   "eslintConfig": {
     "extends": [
@@ -43,8 +44,9 @@
   },
   "devDependencies": {
     "concurrently": "^7.2.1",
-    "electron": "^19.0.1",
+    "electron": "^36.4.0",
     "electron-is-dev": "^2.0.0",
-    "wait-on": "^6.0.1"
+    "electron-packager": "^17.1.2",
+    "wait-on": "^8.0.3"
   }
 }

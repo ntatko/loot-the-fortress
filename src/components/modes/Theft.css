@@ -1,0 +1,128 @@
+.theft-container {
+  z-index: -1;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('../../assets/fortress-inside.png');
+  position: absolute;
+  min-height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: scroll;
+  padding-bottom: 2rem;
+}
+
+.theft-content {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff3e;
+  border-radius: 2rem;
+}
+
+.theft-title {
+  font-size: 3rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.theft-gold-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 10rem;
+}
+
+.theft-gold-count {
+  font-size: 3rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.theft-accomplice-bonus {
+  font-size: 1rem;
+  font-family: 'Syne Mono', monospace;
+  width: 5rem;
+}
+
+.theft-history-container {
+  display: flex;
+  height: 1rem;
+  overflow: show;
+  flex-direction: row;
+}
+
+.theft-history-item {
+  font-size: 1rem;
+  font-family: 'Syne Mono', monospace;
+  transition: ease-out 2s;
+}
+
+.theft-history-item.failure {
+  color: red;
+}
+
+.theft-history-item.success {
+  color: black;
+}
+
+.theft-buttons-container {
+  display: flex;
+}
+
+.theft-high-score {
+  font-size: 1rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.theft-bag-selector-container {
+  display: flex;
+}
+
+.bag-selector {
+  transition: all .2s;
+  border-radius: 1rem;
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+}
+
+.bag-selector:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bag-selector.selected {
+  border: 3px black solid;
+  margin: -3px;
+}
+
+.developer-panel {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 30%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(100, 100, 100, 0.5);
+  padding: 5px;
+  border: 3px solid black;
+  overflow: scroll;
+  min-height: 300px;
+  min-width: 300px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.developer-panel-item {
+  font-size: 0.7rem;
+  font-family: 'Syne Mono', monospace;
+} 
