@@ -24,7 +24,6 @@ const Escape = () => {
         <div className="escape-answers">
           <TriviaAnswerButton
             onClick={() => {
-              window._paq.push(["trackEvent", "escape", "correct"]);
               setCorrectCount(correctCount + 1);
               setQuestion(getTriviaQuestion());
             }}
@@ -38,7 +37,6 @@ const Escape = () => {
             <TriviaAnswerButton
               key={answer}
               onClick={() => {
-                window._paq.push(["trackEvent", "escape", "incorrect"]);
                 setIncorrectCount(incorrectCount + 1);
                 setQuestion(getTriviaQuestion());
               }}
