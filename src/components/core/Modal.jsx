@@ -28,7 +28,8 @@ const Modal = ({ isOpen, onClose = () => {}, children }) => {
 };
 
 Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  // Callers pass through raw localStorage flags, which can be null.
+  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   children: PropTypes.node.isRequired,
 };

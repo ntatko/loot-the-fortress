@@ -76,8 +76,10 @@ const entryFor = (state, id) => state.countries[id] || emptyDelegation;
  * Move every stationed delegation forward by the wall-clock time since the last
  * tick, settling any country whose looting finished. Pure, so it can be run
  * once a second or once after a twelve hour nap with the same result.
+ *
+ * Exported for the tests.
  */
-const advance = (state, now) => {
+export const advance = (state, now) => {
     const seconds = Math.min(
         Math.max((now - state.lastTick) / 1000, 0),
         MAX_CATCHUP_SECONDS

@@ -71,10 +71,12 @@ const Inventory = (props) => {
 };
 
 Inventory.propTypes = {
-  inventoryItems: PropTypes.arrayOf({
-    type: PropTypes.string.isRequired,
-    count: PropTypes.number.isRequired,
-  }).isRequired,
+  inventoryItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    })
+  ).isRequired,
 };
 
 export default Inventory;
