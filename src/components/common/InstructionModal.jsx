@@ -11,15 +11,104 @@ import {
   WALES,
   CROWN,
 } from "./Inventory";
-import MoneyBag from "../../assets/money-bag.svg";
 import Coins from "../../assets/gold_coins.svg";
-import Briefcase from "../../assets/briefcase.svg";
 import Crown from "../../assets/crown.svg";
 import Key from "../../assets/key.svg";
 import { useInventory } from "../../context/useInventory";
 import { useWorld } from "../../context/useWorld";
 import Modal from "../core/Modal";
 import GameLoopDiagram from "./GameLoopDiagram";
+import {
+  BagOddsGraphic,
+  CrownGraphic,
+  EscapeGraphic,
+  LootGraphic,
+  ShopGraphic,
+  WorldGraphic,
+} from "./InstructionGraphics";
+
+const inline = { height: "1.5rem", verticalAlign: "middle" };
+
+const Step = ({ number, title, children }) => (
+  <section style={{ marginTop: "1.5rem" }}>
+    <div
+      style={{
+        fontSize: "1.5rem",
+        fontFamily: "'Syne Mono', monospace",
+        fontWeight: "bold",
+        borderBottom: "2px solid #bb6108",
+        paddingBottom: "0.25rem",
+        marginBottom: "0.5rem",
+      }}
+    >
+      {number}. {title}
+    </div>
+    {children}
+  </section>
+);
+
+Step.propTypes = {
+  number: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+const Unlocked = ({ title, children }) => (
+  <section style={{ marginTop: "1.5rem" }}>
+    <div
+      style={{
+        fontSize: "1.5rem",
+        fontFamily: "'Syne Mono', monospace",
+        fontWeight: "bold",
+        borderBottom: "2px solid #bb6108",
+        paddingBottom: "0.25rem",
+        marginBottom: "0.5rem",
+      }}
+    >
+      {title}
+    </div>
+    {children}
+  </section>
+);
+
+Unlocked.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+const ItemHeading = ({ type, tagline }) => (
+  <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "0.75rem",
+        marginTop: "1rem",
+      }}
+    >
+      <img style={{ height: "2.5rem" }} src={getInventoryImage(type)} alt={type} />
+      <div style={{ fontSize: "1.5rem", fontFamily: "'Syne Mono', monospace" }}>
+        <b>{type}</b>
+      </div>
+    </div>
+    <div
+      style={{
+        fontSize: "1.2rem",
+        fontFamily: "'Syne Mono', monospace",
+        textAlign: "center",
+        color: "#7a6a58",
+      }}
+    >
+      {tagline}
+    </div>
+  </>
+);
+
+ItemHeading.propTypes = {
+  type: PropTypes.string.isRequired,
+  tagline: PropTypes.string.isRequired,
+};
 
 const InstructionModal = (props) => {
   const { inventoryItems } = useInventory();
@@ -32,180 +121,88 @@ const InstructionModal = (props) => {
     <Modal isOpen={props.show} onClose={props.onClose}>
       <div className="modal-header text">How to play</div>
 
-      {/* The short version, pinned above the scrolling detail. */}
-      <GameLoopDiagram />
+      <div className="text" style={{ fontSize: "1.2rem", overflow: "auto" }}>
+        <GameLoopDiagram />
 
-      <div className="text" style={{ fontSize: "1.2rem", overflow: "scroll" }}>
-        <p>
-          The goal of the game is to collect as much gold as possible.
-          Technically, you win when you have enough gold to buy a{" "}
-          <img style={{ height: "1.5rem" }} src={Crown} alt={"stuff"} /> crown.
+        <p style={{ textAlign: "center" }}>
+          Steal <img style={inline} src={Coins} alt="gold" /> gold from the
+          fortress and get out with it. Do that enough times and you can buy the{" "}
+          <img style={inline} src={Crown} alt="crown" /> <b>crown</b>, which is
+          how you win.
         </p>
-        <p>
-          So, how do you make money? You <b>loot the fortress</b> and collect{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> gold.
-        </p>
-        <p>
-          But there's a catch. Every time you put{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> gold in
-          your sack, there's a <b>chance that it will break</b>. Each kind of
-          sack has a different chance of breaking.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <img style={{ height: "2.5rem" }} src={MoneyBag} alt={props.type} />
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            <b>{BURLAP_SACK}</b>
-          </div>
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            1 in 5 chance
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <img style={{ height: "2.5rem" }} src={Briefcase} alt={props.type} />
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            <b>{LEATHER_SACK}</b>
-          </div>
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            1 in 16 chance
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <img
-            style={{ height: "2.5rem" }}
-            src={getInventoryImage(BACKPACK)}
-            alt={props.type}
-          />
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            <b>{BACKPACK}</b>
-          </div>
-          <div
-            style={{
-              fontSize: "1.5rem",
-              fontFamily: "Syne Mono",
-              monospace: "true",
-            }}
-          >
-            1 in 64 chance
-          </div>
-        </div>
-        <p>
-          If you break a sack, you lose the gold you put in it. But don't worry!
-          You can always buy a new sack to keep your gold. If you have enough
-          gold, that is.
-        </p>
-        <p>
-          If you're escaping the fortress with{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> loot,
-          you'll need to find the{" "}
-          <img style={{ height: "1.5rem" }} src={Key} alt={props.type} />{" "}
-          <b>key</b>. You'll be presented with a <b>trivia question</b>. If you
-          answer correctly, you keep your{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> money.
-          If you don't, you'll have to pay a{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> bribe
-          to get out of the fortress (half your{" "}
-          <img style={{ height: "1.5rem" }} src={Coins} alt={"stuff"} /> loot,
-          rounded up).
-        </p>
-        {!hasCrown && (
-          <>
+
+        <Step number={1} title="Shop">
+          <ShopGraphic />
+          <p>
+            You can't carry gold without something to carry it in. Spend your{" "}
+            <img style={inline} src={Coins} alt="gold" /> gold at the store on{" "}
+            <b>sacks</b>. You start with two burlap ones, so you can skip
+            straight to looting your first time.
+          </p>
+        </Step>
+
+        <Step number={2} title="Bag">
+          <BagOddsGraphic />
+          <p>
+            Every coin you drop in a sack is another chance it{" "}
+            <b>bursts and spills everything</b>. That chance is the only real
+            difference between the three, and it's why the good ones cost more.
+          </p>
+          <p>
+            A <b>{BURLAP_SACK}</b> is cheap and nervous. A <b>{LEATHER_SACK}</b>{" "}
+            is steadier. A <b>{BACKPACK}</b> will carry a fortune. Pick which one
+            you're using before you start a haul.
+          </p>
+        </Step>
+
+        <Step number={3} title="Loot">
+          <LootGraphic />
+          <p>
+            Tap <b>Loot</b> to slip another coin into the sack. Tap it as many
+            times as your nerve holds. If the sack bursts you lose that haul and
+            the sack with it — the gold you've already banked at home is safe.
+          </p>
+        </Step>
+
+        <Step number={4} title="Escape">
+          <EscapeGraphic />
+          <p>
+            Walking out needs the <img style={inline} src={Key} alt="key" />{" "}
+            <b>key</b>, and the key needs a <b>trivia question</b> about castles
+            and fortresses. Answer it right and the whole haul goes in the bank.
+            Answer it wrong and you're caught, and half of it (rounded down)
+            buys your way out.
+          </p>
+        </Step>
+
+        <Step number={5} title="Repeat">
+          <CrownGraphic />
+          <p>
+            Bank the haul, buy a better sack, take a bigger risk. Keep going
+            until you can afford the{" "}
+            <img style={inline} src={Crown} alt="crown" /> <b>crown</b>.
+          </p>
+          {!hasCrown && (
             <p>
               <b>Oh, also...</b> when you think you've won, be sure to check the
               store out again. You might find more interesting stuff there.
             </p>
+          )}
+          {!hasCrown && (
             <p>
               <b>Good luck!</b>
             </p>
-          </>
-        )}
+          )}
+        </Step>
+
         {hasCrown && (
-          <>
-            <p style={{ fontSize: "2rem" }}>
-              <b>STAGE TWO:</b>
-            </p>
+          <Unlocked title="Stage two">
             <p>
               There are some new items to find in the store that might make your
               journey a bit more exciting.
             </p>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-              }}
-            >
-              <img
-                style={{ height: "2.5rem" }}
-                src={getInventoryImage(ACCOMPLICE)}
-                alt={ACCOMPLICE}
-              />
-              <div
-                style={{
-                  fontSize: "1.5rem",
-                  fontFamily: "Syne Mono",
-                  monospace: "true",
-                }}
-              >
-                <b>{ACCOMPLICE}</b>
-              </div>
-            </div>
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontFamily: "Syne Mono",
-                monospace: "true",
-              }}
-            >
-              A thieving multiplier
-            </div>
+
+            <ItemHeading type={ACCOMPLICE} tagline="A thieving multiplier" />
             <p>
               Every time you loot, your <strong>accomplice</strong> does, too.
               Your <b>sack</b> can hold all the extra gold, too, without being
@@ -214,37 +211,7 @@ const InstructionModal = (props) => {
               <b>loot</b>.
             </p>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-              }}
-            >
-              <img
-                style={{ height: "2.5rem" }}
-                src={getInventoryImage(IPHONE)}
-                alt={IPHONE}
-              />
-              <div
-                style={{
-                  fontSize: "1.5rem",
-                  fontFamily: "Syne Mono",
-                  monospace: "true",
-                }}
-              >
-                <b>{IPHONE}</b>
-              </div>
-            </div>
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontFamily: "Syne Mono",
-                monospace: "true",
-              }}
-            >
-              A Googling Device
-            </div>
+            <ItemHeading type={IPHONE} tagline="A Googling Device" />
             <p>
               Every time you answer your trivia question wrong, your{" "}
               <strong>iphone</strong> corrects you, because you should have been
@@ -252,73 +219,32 @@ const InstructionModal = (props) => {
               haul instead of half of it.
             </p>
 
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-              }}
-            >
-              <img
-                style={{ height: "2.5rem" }}
-                src={getInventoryImage(WALES)}
-                alt={WALES}
-              />
-              <div
-                style={{
-                  fontSize: "1.5rem",
-                  fontFamily: "Syne Mono",
-                  monospace: "true",
-                }}
-              >
-                <b>{WALES}</b>
-              </div>
-            </div>
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontFamily: "Syne Mono",
-                monospace: "true",
-              }}
-            >
-              Literally, the country of wales
-            </div>
+            <ItemHeading type={WALES} tagline="Literally, the country of wales" />
             <p>
               Yeah, you can buy <strong>wales</strong>. What other game lets you
               do that?
             </p>
-            <br></br>
-
             <p>
               Oh, and the population of Wales is 3.2 million people. Just an
               interesting hint.
             </p>
-          </>
+          </Unlocked>
         )}
 
         {hasPopulatedWales && (
-          <>
-            <hr />
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontFamily: "Syne Mono",
-                monospace: "true",
-              }}
-            >
-              <b>Ruling the world</b>
-            </div>
+          <Unlocked title="Ruling the world">
+            <WorldGraphic />
             <p>
               You filled <b>wales</b> with 3.2 million accomplices, so the world
               map is open from the main menu.
             </p>
             <p>
               Pay a country's entry fee in{" "}
-              <img style={{ height: "1.5rem" }} src={Coins} alt={"gold"} /> gold
-              and station a <b>delegation</b> of accomplices there. They loot it
-              in the background — a delegation the size of the country takes
-              about a minute, half that size takes twice as long, and nothing
-              ever falls in under five seconds.
+              <img style={inline} src={Coins} alt="gold" /> gold and station a{" "}
+              <b>delegation</b> of accomplices there. They loot it in the
+              background — a delegation the size of the country takes about a
+              minute, half that size takes twice as long, and nothing ever falls
+              in under five seconds.
             </p>
             <p>
               When a country is fully looted, its entire population joins your
@@ -335,7 +261,7 @@ const InstructionModal = (props) => {
               Take every country and Wales is the only one left standing. That's
               the end of the game.
             </p>
-          </>
+          </Unlocked>
         )}
       </div>
 

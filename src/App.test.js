@@ -40,6 +40,27 @@ describe('the how-to-play modal', () => {
     });
   });
 
+  it('walks through every step of the loop, each with its own graphic', () => {
+    localStorage.removeItem('firstTime');
+    render(<App />);
+
+    ['1. Shop', '2. Bag', '3. Loot', '4. Escape', '5. Repeat'].forEach((heading) => {
+      const section = screen.getByText(heading).closest('section');
+      expect(section).not.toBeNull();
+      expect(section.querySelector('svg[role="img"]')).not.toBeNull();
+    });
+  });
+
+  it('scrolls the diagrams along with the text', () => {
+    localStorage.removeItem('firstTime');
+    const { container } = render(<App />);
+
+    // The overview lives inside the scrolling body, not pinned above it.
+    const body = container.querySelector('.modal-content div.text:not(.modal-header)');
+    expect(body).not.toBeNull();
+    expect(body.querySelector('svg[aria-label^="The loop"]')).not.toBeNull();
+  });
+
   it('stays shut for a returning player', () => {
     render(<App />); // beforeEach has already marked them as returning
     expect(screen.queryByText('How to play')).not.toBeInTheDocument();
