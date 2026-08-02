@@ -1,4 +1,4 @@
-import { formatCount, formatDuration } from './format';
+import { formatCount } from './format';
 
 describe('formatCount', () => {
   it('leaves small numbers alone', () => {
@@ -22,29 +22,5 @@ describe('formatCount', () => {
 
   it('floors fractional counts', () => {
     expect(formatCount(3.7)).toBe('3');
-  });
-});
-
-describe('formatDuration', () => {
-  it('counts seconds', () => {
-    expect(formatDuration(5)).toBe('5s');
-    expect(formatDuration(59)).toBe('59s');
-  });
-
-  it('rounds part-seconds up, never to zero', () => {
-    expect(formatDuration(4.2)).toBe('5s');
-    expect(formatDuration(0.1)).toBe('1s');
-    expect(formatDuration(0)).toBe('1s');
-  });
-
-  it('breaks into minutes, hours and days', () => {
-    expect(formatDuration(90)).toBe('1m 30s');
-    expect(formatDuration(3660)).toBe('1h 1m');
-    expect(formatDuration(90000)).toBe('1d 1h');
-  });
-
-  it('says so when a delegation will never finish', () => {
-    expect(formatDuration(null)).toBe('never');
-    expect(formatDuration(Infinity)).toBe('never');
   });
 });

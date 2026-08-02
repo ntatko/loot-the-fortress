@@ -267,14 +267,18 @@ const InstructionModal = (props) => {
               </p>
             </Step>
 
-            <Step number={3} title="Let them work">
+            <Step number={3} title="Go back to looting">
               <WorldSpeedGraphic />
               <p>
-                They loot in the background, even while the game is closed. The
-                bigger the delegation against the size of the country, the
-                faster it falls — though nothing ever falls in under five
-                seconds. You can <b>recall</b> a delegation at any time, and the
-                progress waits for them.
+                Delegations don't work by themselves. Every time you tap{" "}
+                <b>Loot</b> in the fortress, everyone you have stationed abroad
+                loots too — so the two jobs happen on the same tap. The bigger
+                the delegation against the size of the country, the more each
+                tap takes.
+              </p>
+              <p>
+                You can <b>recall</b> a delegation at any time, and the progress
+                waits for them.
               </p>
             </Step>
 

@@ -4,8 +4,8 @@ import {
   delegationPrice,
   fastestDelegation,
   getCountry,
-  lootEta,
-  lootRate,
+  progressPerTap,
+  tapsToFall,
   WALES_POPULATION,
 } from './countries';
 
@@ -56,36 +56,40 @@ describe('the conquest economy', () => {
   });
 });
 
-describe('lootRate', () => {
+describe('progressPerTap', () => {
   it('is zero without a delegation', () => {
-    expect(lootRate(tuvalu, 0)).toBe(0);
-    expect(lootRate(tuvalu, -5)).toBe(0);
+    expect(progressPerTap(tuvalu, 0)).toBe(0);
+    expect(progressPerTap(tuvalu, -5)).toBe(0);
   });
 
-  it('takes 50 seconds when the delegation matches the population', () => {
-    expect(lootRate(tuvalu, tuvalu.population)).toBeCloseTo(0.02, 10);
-    expect(lootEta(tuvalu, tuvalu.population)).toBeCloseTo(50, 10);
+  it('takes 20 taps when the delegation matches the population', () => {
+    expect(progressPerTap(tuvalu, tuvalu.population)).toBeCloseTo(0.05, 10);
+    expect(tapsToFall(tuvalu, tuvalu.population)).toBe(20);
   });
 
-  it('halving the delegation doubles the time', () => {
-    expect(lootEta(tuvalu, tuvalu.population / 2)).toBeCloseTo(100, 10);
+  it('halving the delegation doubles the taps', () => {
+    expect(tapsToFall(tuvalu, tuvalu.population / 2)).toBe(40);
   });
 
-  it('caps out at five seconds however many you send', () => {
-    expect(lootEta(tuvalu, tuvalu.population * 10)).toBeCloseTo(5, 10);
-    expect(lootEta(tuvalu, tuvalu.population * 1000000)).toBeCloseTo(5, 10);
+  it('caps out at two taps however many you send', () => {
+    expect(tapsToFall(tuvalu, tuvalu.population * 10)).toBe(2);
+    expect(tapsToFall(tuvalu, tuvalu.population * 1000000)).toBe(2);
   });
 
   it('reports the cheapest delegation that reaches the cap', () => {
     expect(fastestDelegation(tuvalu)).toBe(tuvalu.population * 10);
-    expect(lootEta(tuvalu, fastestDelegation(tuvalu))).toBeCloseTo(5, 10);
+    expect(tapsToFall(tuvalu, fastestDelegation(tuvalu))).toBe(2);
   });
 
   it('accounts for progress already made', () => {
-    expect(lootEta(tuvalu, tuvalu.population, 0.5)).toBeCloseTo(25, 10);
+    expect(tapsToFall(tuvalu, tuvalu.population, 0.5)).toBe(10);
+  });
+
+  it('counts whole taps, since you cannot tap half a time', () => {
+    expect(Number.isInteger(tapsToFall(tuvalu, tuvalu.population / 3))).toBe(true);
   });
 
   it('never finishes with nobody stationed', () => {
-    expect(lootEta(tuvalu, 0)).toBeNull();
+    expect(tapsToFall(tuvalu, 0)).toBeNull();
   });
 });

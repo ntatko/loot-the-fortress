@@ -223,3 +223,13 @@
   font-size: 1.2rem;
   padding-top: 0.5rem;
 }
+
+.world-hint {
+  font-family: 'Syne Mono', monospace;
+  font-size: 1.1rem;
+  background-color: #ffffff9e;
+  border-radius: 1rem;
+  padding: 0.4rem 1rem;
+  margin-top: 0.25rem;
+  text-align: center;
+}

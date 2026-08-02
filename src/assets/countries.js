@@ -7,13 +7,14 @@ export const WALES_POPULATION = 3200000;
 
 const WORLD_POPULATION = 8100000000;
 
-// Every accomplice you station abroad loots this share of the local population
-// per second, so a delegation the size of the country takes ~50 seconds.
-const LOOT_RATE = 0.02;
+// Delegations don't work on their own. Every time you tap Loot back at the
+// fortress, everyone you have stationed abroad loots too — this share of the
+// local population each, so a delegation the size of the country takes 20 taps.
+const LOOT_PER_TAP = 0.05;
 
-// ...but a country can never fall in less than five seconds, no matter how
+// ...but a country can never fall in fewer than two taps, no matter how
 // absurdly large the delegation is.
-const MAX_LOOT_RATE = 0.2;
+const MAX_PER_TAP = 0.5;
 
 // What it costs, in gold, to get a delegation through the door.
 const PRICE_PER_CAPITA = 1000;
@@ -97,25 +98,25 @@ export const conquestReward = (country) =>
   country.population * REWARD_PER_CAPITA;
 
 /**
- * The smallest delegation that still hits MAX_LOOT_RATE. Anything beyond this
- * is wasted — the country falls in five seconds either way.
+ * The smallest delegation that still hits MAX_PER_TAP. Anything beyond this is
+ * wasted — the country falls in two taps either way.
  */
 export const fastestDelegation = (country) =>
-  Math.ceil((MAX_LOOT_RATE / LOOT_RATE) * country.population);
+  Math.ceil((MAX_PER_TAP / LOOT_PER_TAP) * country.population);
 
-/** Share of a country a delegation of this size loots per second. */
-export const lootRate = (country, delegation) => {
+/** Share of a country a delegation of this size loots per tap of Loot. */
+export const progressPerTap = (country, delegation) => {
   if (delegation <= 0) {
     return 0;
   }
-  return Math.min(MAX_LOOT_RATE, (LOOT_RATE * delegation) / country.population);
+  return Math.min(MAX_PER_TAP, (LOOT_PER_TAP * delegation) / country.population);
 };
 
-/** Seconds until this delegation finishes looting, or null if it never will. */
-export const lootEta = (country, delegation, progress = 0) => {
-  const rate = lootRate(country, delegation);
-  if (rate <= 0) {
+/** Taps of Loot until this delegation finishes, or null if it never will. */
+export const tapsToFall = (country, delegation, progress = 0) => {
+  const perTap = progressPerTap(country, delegation);
+  if (perTap <= 0) {
     return null;
   }
-  return (1 - progress) / rate;
+  return Math.ceil((1 - progress) / perTap);
 };

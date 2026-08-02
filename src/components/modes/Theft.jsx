@@ -18,6 +18,7 @@ import "./Theft.css";
 
 const Theft = () => {
   const [goldCount, setGoldCount] = useState(0);
+  const [conquered, setConquered] = useState([]);
   const [bagType, setBagType] = useState(BURLAP_SACK);
   const [history, setHistory] = useState([]);
   const [highScore, setHighScore] = useState(
@@ -29,7 +30,11 @@ const Theft = () => {
   );
 
   const { inventoryItems, updateInventory } = useInventory();
-  const { unlocked: rulesTheWorld } = useWorld();
+  const {
+    unlocked: rulesTheWorld,
+    lootAbroad,
+    activeDelegations,
+  } = useWorld();
 
   const hasBags = inventoryItems.some(
     (e) =>
@@ -115,6 +120,15 @@ const Theft = () => {
         }
       }
     }
+
+    // Your delegations loot on the same tap you do. This has to come after
+    // updateInventory above, which builds from a stale copy of the inventory
+    // and would otherwise wipe out any conquest rewards.
+    const fallen = lootAbroad();
+    if (fallen.length > 0) {
+      setConquered((current) => [...current, ...fallen.map((c) => c.name)]);
+    }
+
     setTimeout(() => {
       setHistory((thisHistory) => thisHistory.slice(1));
     }, 2000);
@@ -226,6 +240,32 @@ const Theft = () => {
           />
         </div>
       </div>
+      {(activeDelegations.length > 0 || conquered.length > 0) && (
+        <div className="theft-delegations">
+          <div className="theft-delegations-title">
+            {activeDelegations.length > 0 ? "looting abroad" : "abroad"}
+          </div>
+          {activeDelegations.map(({ country, entry }) => (
+            <div className="theft-delegation" key={country.id}>
+              <div className="theft-delegation-name">{country.name}</div>
+              <div className="theft-delegation-track">
+                <div
+                  className="theft-delegation-bar"
+                  style={{ width: `${Math.min(100, entry.progress * 100)}%` }}
+                />
+              </div>
+              <div className="theft-delegation-percent">
+                {`${Math.floor(entry.progress * 100)}%`}
+              </div>
+            </div>
+          ))}
+          {conquered.length > 0 && (
+            <div className="theft-delegation-fell">
+              {`went Welsh this trip: ${conquered.join(", ")}`}
+            </div>
+          )}
+        </div>
+      )}
       {localStorage.getItem("isDeveloper") === "true" && (
         <div className="developer-panel">
           {history.map((item) => (

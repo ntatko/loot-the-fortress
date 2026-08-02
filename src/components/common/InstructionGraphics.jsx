@@ -338,19 +338,19 @@ export const WorldDelegationGraphic = () => (
 /** How long a country takes to fall, against the size of the delegation. */
 export const WorldSpeedGraphic = () => {
   const rows = [
-    { size: "10x its size", seconds: 5, time: "5s" },
-    { size: "same size", seconds: 50, time: "50s" },
-    { size: "half its size", seconds: 100, time: "100s" },
+    { size: "10x its size", taps: 2, label: "2 taps" },
+    { size: "same size", taps: 20, label: "20 taps" },
+    { size: "half its size", taps: 40, label: "40 taps" },
   ];
   const trackX = 172;
   const trackWidth = 116;
-  const slowest = 100;
+  const slowest = 40;
 
   return (
     <svg
       viewBox="0 0 360 152"
       role="img"
-      aria-label="Time for a country to fall: a delegation ten times its size takes 5 seconds, the same size 50 seconds, half the size 100 seconds"
+      aria-label="Taps of Loot for a country to fall: a delegation ten times its size takes 2 taps, the same size 20 taps, half the size 40 taps"
       style={{
         display: "block",
         width: "100%",
@@ -361,7 +361,7 @@ export const WorldSpeedGraphic = () => {
       }}
     >
       <text x="8" y="14" fontFamily={MONO} fontSize="12" fill={MUTED}>
-        how long a country takes to fall
+        taps of Loot to take a country
       </text>
 
       {rows.map((row, index) => {
@@ -376,13 +376,13 @@ export const WorldSpeedGraphic = () => {
             <rect
               x={trackX}
               y={cy - 7}
-              width={Math.max(6, (row.seconds / slowest) * trackWidth)}
+              width={Math.max(6, (row.taps / slowest) * trackWidth)}
               height="14"
               rx="7"
               fill="#bb6108"
             />
             <text x="298" y={cy + 5} fontFamily={MONO} fontSize="13" fill={INK}>
-              {row.time}
+              {row.label}
             </text>
           </g>
         );

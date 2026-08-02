@@ -39,8 +39,9 @@ const StageThreeModal = (props) => {
         <p>
           So stop stealing coins. Start buying countries. Send a{" "}
           <b>delegation</b> of your accomplices abroad, pay the entry fee, and
-          let them get to work — the bigger the delegation, the faster the
-          country gets looted.
+          then <b>go back to looting</b> — every tap of Loot in the fortress is
+          a tap of looting in every country you've occupied. The bigger the
+          delegation, the more each tap takes.
         </p>
         <p>
           When a delegation finishes, that country's entire population joins
@@ -48,9 +49,9 @@ const StageThreeModal = (props) => {
           the only country left standing.
         </p>
         <p>
-          Two warnings. Accomplices posted abroad are <b>not at home</b>, so
-          they stop multiplying your hauls in the fortress until they get back.
-          And they keep looting while the game is closed.
+          One warning. Accomplices posted abroad are <b>not at home</b>, so they
+          stop multiplying your hauls in the fortress until they get back.
+          Sending everyone means smaller hauls and slower conquests.
         </p>
       </div>
 

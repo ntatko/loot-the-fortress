@@ -9,6 +9,9 @@ beforeEach(() => {
   localStorage.clear();
   // Otherwise the how-to-play modal covers the menu.
   localStorage.setItem('firstTime', 'false');
+  // jsdom keeps the URL between tests, so BrowserRouter would still be on
+  // whatever page the last test navigated to.
+  window.history.pushState({}, '', '/');
 });
 
 test('opens on the fortress menu', () => {
@@ -21,6 +24,68 @@ test('opens on the fortress menu', () => {
 test('starts you off with a burlap sack', () => {
   render(<App />);
   expect(screen.getByText(BURLAP_SACK)).toBeInTheDocument();
+});
+
+describe('looting abroad', () => {
+  const stationedSave = () => {
+    saveInventory([
+      { type: BURLAP_SACK, count: 0 },
+      { type: 'backpack', count: 20 },
+      { type: GOLD, count: 1000000 },
+      { type: 'crown', count: 1 },
+      { type: WALES, count: 1 },
+      { type: ACCOMPLICE, count: 3200000 },
+    ]);
+    localStorage.setItem(
+      'worldState',
+      JSON.stringify({
+        unlocked: true,
+        sawEnding: false,
+        // Ten times the Vatican's 764 people: two taps and it falls.
+        countries: {
+          vatican: { delegation: 7640, progress: 0, conquered: false, paid: true },
+        },
+      })
+    );
+  };
+
+  const worldState = () => JSON.parse(localStorage.getItem('worldState'));
+
+  it('does not advance on its own', () => {
+    stationedSave();
+    render(<App />);
+    expect(worldState().countries.vatican.progress).toBe(0);
+  });
+
+  it('advances a delegation on every tap of Loot', () => {
+    stationedSave();
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('link', { name: 'Go Looting' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Loot' }));
+
+    expect(worldState().countries.vatican.progress).toBeCloseTo(0.5, 10);
+    expect(worldState().countries.vatican.conquered).toBe(false);
+    expect(screen.getByText('Vatican City')).toBeInTheDocument();
+  });
+
+  it('settles the country, and pays out, on the tap that finishes it', () => {
+    stationedSave();
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('link', { name: 'Go Looting' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Loot' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Loot' }));
+
+    expect(worldState().countries.vatican.conquered).toBe(true);
+    expect(screen.getByText(/went Welsh this trip: Vatican City/)).toBeInTheDocument();
+
+    const inventory = JSON.parse(localStorage.getItem('inventoryItems'));
+    const countOf = (type) => inventory.find((i) => i.type === type).count;
+    // The 7,640 delegates come home with all 764 locals behind them.
+    expect(countOf(ACCOMPLICE)).toBe(3200000 + 7640 + 764);
+    expect(countOf(GOLD)).toBe(1000000 + 764 * 2500);
+  });
 });
 
 describe('the how-to-play modal', () => {
@@ -72,7 +137,7 @@ describe('the how-to-play modal', () => {
     [
       '1. Buy your way in',
       '2. Send a delegation',
-      '3. Let them work',
+      '3. Go back to looting',
       '4. Take the country',
       '5. Rule the world',
     ].forEach((heading) => {

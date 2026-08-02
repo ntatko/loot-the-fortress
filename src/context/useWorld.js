@@ -11,16 +11,13 @@ import {
   conquestReward,
   delegationPrice,
   getCountry,
-  lootRate,
+  progressPerTap,
   WALES_POPULATION,
 } from '../assets/countries';
 import { ACCOMPLICE, GOLD, WALES } from '../components/common/Inventory';
 import { useInventory } from './useInventory';
 
 const STORAGE_KEY = 'worldState';
-
-// Delegations keep looting while you're away, but only up to half a day of it.
-const MAX_CATCHUP_SECONDS = 12 * 60 * 60;
 
 const WorldContext = createContext();
 
@@ -41,7 +38,6 @@ export const canRuleTheWorld = (inventoryItems) => {
 
 const emptyState = () => ({
     countries: {},
-    lastTick: Date.now(),
     unlocked: false,
     sawEnding: false,
 });
@@ -54,7 +50,6 @@ const loadState = () => {
         }
         return {
             countries: saved.countries || {},
-            lastTick: saved.lastTick || Date.now(),
             unlocked: !!saved.unlocked,
             sawEnding: !!saved.sawEnding,
         };
@@ -73,17 +68,13 @@ export const emptyDelegation = {
 const entryFor = (state, id) => state.countries[id] || emptyDelegation;
 
 /**
- * Move every stationed delegation forward by the wall-clock time since the last
- * tick, settling any country whose looting finished. Pure, so it can be run
- * once a second or once after a twelve hour nap with the same result.
+ * One round of looting. Every delegation stationed abroad loots its country by
+ * the same tap that fills your sack back at the fortress, settling any country
+ * whose looting finishes. Pure, so it is trivially testable.
  *
  * Exported for the tests.
  */
-export const advance = (state, now) => {
-    const seconds = Math.min(
-        Math.max((now - state.lastTick) / 1000, 0),
-        MAX_CATCHUP_SECONDS
-    );
+export const advance = (state) => {
     const countries = {};
     const rewards = { [GOLD]: 0, [ACCOMPLICE]: 0 };
     const fallen = [];
@@ -91,13 +82,13 @@ export const advance = (state, now) => {
 
     Object.entries(state.countries).forEach(([id, entry]) => {
         const country = getCountry(id);
-        if (!country || entry.conquered || entry.delegation <= 0 || seconds <= 0) {
+        if (!country || entry.conquered || entry.delegation <= 0) {
             countries[id] = entry;
             return;
         }
 
         changed = true;
-        const progress = entry.progress + lootRate(country, entry.delegation) * seconds;
+        const progress = entry.progress + progressPerTap(country, entry.delegation);
 
         if (progress >= 1) {
             countries[id] = { ...entry, delegation: 0, progress: 1, conquered: true };
@@ -110,12 +101,7 @@ export const advance = (state, now) => {
         }
     });
 
-    return {
-        next: { ...state, countries, lastTick: now },
-        rewards,
-        fallen,
-        changed,
-    };
+    return { next: { ...state, countries }, rewards, fallen, changed };
 };
 
 export const WorldProvider = ({ children }) => {
@@ -139,25 +125,23 @@ export const WorldProvider = ({ children }) => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     }, []);
 
-    // While nothing is stationed abroad there is nothing to advance, so the tick
-    // deliberately leaves lastTick alone; every deployment resets it instead.
-    useEffect(() => {
-        const tick = () => {
-            const { next, rewards, fallen, changed } = advance(worldRef.current, Date.now());
-            if (!changed) {
-                return;
-            }
-            commit(next);
-            applyRef.current(rewards);
-            if (fallen.length > 0) {
-                setLastConquest({ countries: fallen, at: Date.now() });
-            }
-        };
-
-        tick();
-        const interval = setInterval(tick, 1000);
-        return () => clearInterval(interval);
-    }, [commit]);
+    /**
+     * Called once per tap of Loot in the fortress. Everyone stationed abroad
+     * loots alongside you. Returns any countries that fell on this tap so the
+     * fortress can say so.
+     */
+    const lootAbroad = () => {
+        const { next, rewards, fallen, changed } = advance(worldRef.current);
+        if (!changed) {
+            return [];
+        }
+        commit(next);
+        applyRef.current(rewards);
+        if (fallen.length > 0) {
+            setLastConquest({ countries: fallen, at: Date.now() });
+        }
+        return fallen;
+    };
 
     // Latch the unlock: once the world is open it stays open, even while most of
     // your accomplices are abroad and your home count has dropped.
@@ -188,7 +172,6 @@ export const WorldProvider = ({ children }) => {
 
         commit({
             ...current,
-            lastTick: Date.now(),
             countries: {
                 ...current.countries,
                 [id]: {
@@ -211,7 +194,6 @@ export const WorldProvider = ({ children }) => {
 
         commit({
             ...current,
-            lastTick: Date.now(),
             countries: {
                 ...current.countries,
                 // Progress stays put. The looting just stops while they're home.
@@ -236,6 +218,10 @@ export const WorldProvider = ({ children }) => {
         (sum, entry) => sum + entry.delegation,
         0
     );
+    const activeDelegations = COUNTRIES.filter((country) => {
+        const entry = world.countries[country.id];
+        return entry && entry.delegation > 0 && !entry.conquered;
+    }).map((country) => ({ country, entry: world.countries[country.id] }));
 
     return (
         <WorldContext.Provider
@@ -247,6 +233,8 @@ export const WorldProvider = ({ children }) => {
                 acknowledgeUnlock,
                 deployDelegation,
                 recallDelegation,
+                lootAbroad,
+                activeDelegations,
                 resetWorld,
                 lastConquest,
                 conqueredCount: conqueredCountries.length,

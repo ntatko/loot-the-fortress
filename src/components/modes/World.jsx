@@ -13,9 +13,9 @@ import {
   conquestReward,
   delegationPrice,
   fastestDelegation,
-  lootEta,
+  tapsToFall,
 } from "../../assets/countries";
-import { formatCount, formatDuration } from "../../utils/format";
+import { formatCount } from "../../utils/format";
 import "./World.css";
 
 const World = () => {
@@ -69,6 +69,11 @@ const World = () => {
           <WorldStat image={Coins} label="in the treasury" value={formatCount(gold)} />
         </div>
         <ButtonLink to="/">Back to the Fortress</ButtonLink>
+        {deployedAccomplices > 0 && !isWorldWelsh && (
+          <div className="world-hint">
+            Your delegations only loot when you do. Go tap <b>Loot</b>.
+          </div>
+        )}
       </div>
 
       <div className="world-countries">
@@ -149,9 +154,11 @@ const CountryCard = ({ country, entry, onDeploy, onRecall }) => {
           {isLooting ? (
             <>
               <div className="country-status">
-                {`${formatCount(entry.delegation)} delegates · ${formatDuration(
-                  lootEta(country, entry.delegation, entry.progress)
-                )} to go`}
+                {`${formatCount(entry.delegation)} delegates · ${tapsToFall(
+                  country,
+                  entry.delegation,
+                  entry.progress
+                )} more taps`}
               </div>
               <div className="country-actions">
                 <Button onClick={onDeploy}>Reinforce</Button>
@@ -209,10 +216,10 @@ const DeployModal = ({
 
       <div className="text deploy-body">
         <p>
-          Station a delegation in <b>{country.name}</b> and they will quietly
-          loot the place, one local at a time. When the looting is done, all{" "}
-          {formatCount(country.population)} of them are Welsh, and your
-          delegation comes home with them.
+          Station a delegation in <b>{country.name}</b> and they loot the place
+          every time you tap <b>Loot</b> back at the fortress. When the looting
+          is done, all {formatCount(country.population)} of them are Welsh, and
+          your delegation comes home with them.
         </p>
 
         <div className="deploy-figures">
@@ -265,9 +272,7 @@ const DeployModal = ({
 
         <div className="deploy-eta">
           {valid
-            ? `Looted in ${formatDuration(
-                lootEta(country, total, entry.progress)
-              )}`
+            ? `Falls after ${tapsToFall(country, total, entry.progress)} taps of Loot`
             : canAfford
             ? "You don't have that many accomplices."
             : "You can't afford the entry fee."}
