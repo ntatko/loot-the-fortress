@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import App from './App';
 import { ACCOMPLICE, BURLAP_SACK, GOLD, WALES } from './components/common/Inventory';
 
@@ -28,6 +28,16 @@ describe('the how-to-play modal', () => {
     localStorage.removeItem('firstTime');
     render(<App />);
     expect(screen.getByText('How to play')).toBeInTheDocument();
+  });
+
+  it('leads with the loop diagram', () => {
+    localStorage.removeItem('firstTime');
+    render(<App />);
+
+    const diagram = screen.getByRole('img', { name: /shop, bag, loot, escape/i });
+    ['Shop', 'Bag', 'Loot', 'Escape', 'buy the crown'].forEach((step) => {
+      expect(within(diagram).getByText(step)).toBeInTheDocument();
+    });
   });
 
   it('stays shut for a returning player', () => {

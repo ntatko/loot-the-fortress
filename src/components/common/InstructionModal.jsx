@@ -19,6 +19,7 @@ import Key from "../../assets/key.svg";
 import { useInventory } from "../../context/useInventory";
 import { useWorld } from "../../context/useWorld";
 import Modal from "../core/Modal";
+import GameLoopDiagram from "./GameLoopDiagram";
 
 const InstructionModal = (props) => {
   const { inventoryItems } = useInventory();
@@ -30,6 +31,9 @@ const InstructionModal = (props) => {
   return (
     <Modal isOpen={props.show} onClose={props.onClose}>
       <div className="modal-header text">How to play</div>
+
+      {/* The short version, pinned above the scrolling detail. */}
+      <GameLoopDiagram />
 
       <div className="text" style={{ fontSize: "1.2rem", overflow: "scroll" }}>
         <p>
