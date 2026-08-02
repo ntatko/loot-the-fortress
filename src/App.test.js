@@ -1,6 +1,12 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import App from './App';
-import { ACCOMPLICE, BURLAP_SACK, GOLD, WALES } from './components/common/Inventory';
+import {
+  ACCOMPLICE,
+  BURLAP_SACK,
+  GOLD,
+  IPHONE,
+  WALES,
+} from './components/common/Inventory';
 
 const saveInventory = (items) =>
   localStorage.setItem('inventoryItems', JSON.stringify(items));
@@ -24,6 +30,61 @@ test('opens on the fortress menu', () => {
 test('starts you off with a burlap sack', () => {
   render(<App />);
   expect(screen.getByText(BURLAP_SACK)).toBeInTheDocument();
+});
+
+describe('the wares panel', () => {
+  it('leaves out anything you have none of', () => {
+    saveInventory([
+      { type: BURLAP_SACK, count: 0 },
+      { type: 'leather sack', count: 3 },
+      { type: GOLD, count: 12 },
+    ]);
+    render(<App />);
+
+    expect(screen.queryByText(BURLAP_SACK)).not.toBeInTheDocument();
+    expect(screen.getByText('leather sack')).toBeInTheDocument();
+    expect(screen.getByText(GOLD)).toBeInTheDocument();
+  });
+
+  it('says so when you have nothing at all', () => {
+    saveInventory([
+      { type: BURLAP_SACK, count: 0 },
+      { type: GOLD, count: 0 },
+    ]);
+    render(<App />);
+    expect(screen.getByText('Nothing at all.')).toBeInTheDocument();
+  });
+
+  it('shows a trophy as a small icon with no count', () => {
+    saveInventory([
+      { type: GOLD, count: 12 },
+      { type: 'crown', count: 1 },
+      { type: IPHONE, count: 1 },
+    ]);
+    render(<App />);
+
+    // Present as icons...
+    expect(screen.getByAltText('crown')).toBeInTheDocument();
+    expect(screen.getByAltText(IPHONE)).toBeInTheDocument();
+    // ...but without the big count-and-label treatment the supplies get.
+    expect(screen.queryByText('crown')).not.toBeInTheDocument();
+    expect(screen.queryByText(IPHONE)).not.toBeInTheDocument();
+  });
+
+  it('marks up a spare with a multiplier', () => {
+    saveInventory([
+      { type: GOLD, count: 12 },
+      { type: IPHONE, count: 2 },
+      { type: WALES, count: 3 },
+      { type: 'crown', count: 1 },
+    ]);
+    render(<App />);
+
+    expect(screen.getByText('x2')).toBeInTheDocument();
+    expect(screen.getByText('x3')).toBeInTheDocument();
+    // One crown is just a crown.
+    expect(screen.queryByText('x1')).not.toBeInTheDocument();
+  });
 });
 
 describe('looting abroad', () => {

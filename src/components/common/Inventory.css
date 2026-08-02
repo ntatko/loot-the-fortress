@@ -1,0 +1,45 @@
+.inventory {
+  padding: 1rem;
+  background-color: #ffffff3e;
+  border-radius: 2rem;
+  margin: 2rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.inventory-title {
+  font-size: 2rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.inventory-empty {
+  font-size: 1rem;
+  opacity: 0.7;
+  padding: 0.5rem 0;
+}
+
+/* Things you only ever need one of: no big count, just a small badge if you
+   somehow ended up with a spare. */
+.inventory-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid #00000021;
+}
+
+.inventory-status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.inventory-status-item img {
+  height: 1.5rem;
+}
+
+.inventory-status-count {
+  font-size: 0.9rem;
+  font-weight: bold;
+}

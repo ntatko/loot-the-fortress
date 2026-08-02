@@ -9,6 +9,7 @@ import iphone from "../../assets/iphone.svg";
 import backpack from "../../assets/backpack.svg";
 import wales from "../../assets/wales.svg";
 import accomplice from "../../assets/accomplice.svg";
+import "./Inventory.css";
 
 export const GOLD = "gold";
 export const BURLAP_SACK = "burlap sack";
@@ -18,6 +19,12 @@ export const IPHONE = "iphone";
 export const BACKPACK = "backpack";
 export const WALES = "wales";
 export const ACCOMPLICE = "accomplice";
+
+/**
+ * Trophies rather than supplies. You can buy several, but a second one does
+ * nothing, so they get a small icon instead of a line of their own.
+ */
+export const STATUS_ITEMS = [CROWN, IPHONE, WALES];
 
 export const getInventoryImage = (item) => {
   switch (item) {
@@ -43,29 +50,38 @@ export const getInventoryImage = (item) => {
 };
 
 const Inventory = (props) => {
-  const { inventoryItems } = props;
+  // Nothing you don't actually have. An emptied sack type or a spent purse
+  // just leaves the list rather than sitting there reading zero.
+  const owned = props.inventoryItems.filter((item) => item.count > 0);
+  const supplies = owned.filter((item) => !STATUS_ITEMS.includes(item.type));
+  const status = owned.filter((item) => STATUS_ITEMS.includes(item.type));
 
   return (
-    <div
-      style={{
-        padding: "1rem",
-        backgroundColor: "#ffffff3e",
-        borderRadius: "2rem",
-        margin: "2rem",
-      }}
-    >
-      <div
-        style={{ fontSize: "2rem", fontFamily: "Syne Mono", monospace: "true" }}
-      >
-        Your wares
-      </div>
-      {inventoryItems.map((item) => (
+    <div className="inventory">
+      <div className="inventory-title">Your wares</div>
+
+      {owned.length === 0 && <div className="inventory-empty">Nothing at all.</div>}
+
+      {supplies.map((item) => (
         <InventoryItem
           key={item.type}
           image={getInventoryImage(item.type)}
           {...item}
         />
       ))}
+
+      {status.length > 0 && (
+        <div className="inventory-status">
+          {status.map((item) => (
+            <div className="inventory-status-item" key={item.type} title={item.type}>
+              <img src={getInventoryImage(item.type)} alt={item.type} />
+              {item.count > 1 && (
+                <span className="inventory-status-count">{`x${item.count}`}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
