@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { ACCOMPLICE, BURLAP_SACK, GOLD, WALES } from './components/common/Inventory';
 
@@ -21,6 +21,35 @@ test('opens on the fortress menu', () => {
 test('starts you off with a burlap sack', () => {
   render(<App />);
   expect(screen.getByText(BURLAP_SACK)).toBeInTheDocument();
+});
+
+describe('the how-to-play modal', () => {
+  it('greets a brand new player', () => {
+    localStorage.removeItem('firstTime');
+    render(<App />);
+    expect(screen.getByText('How to play')).toBeInTheDocument();
+  });
+
+  it('stays shut for a returning player', () => {
+    render(<App />); // beforeEach has already marked them as returning
+    expect(screen.queryByText('How to play')).not.toBeInTheDocument();
+  });
+
+  it('remembers being dismissed', () => {
+    localStorage.removeItem('firstTime');
+    render(<App />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'I got it' }));
+
+    expect(screen.queryByText('How to play')).not.toBeInTheDocument();
+    expect(localStorage.getItem('firstTime')).toBe('false');
+  });
+
+  it('can be reopened from the menu', () => {
+    render(<App />);
+    fireEvent.click(screen.getByRole('button', { name: 'Instructions' }));
+    expect(screen.getByText('How to play')).toBeInTheDocument();
+  });
 });
 
 test('keeps the world map hidden until Wales is full', () => {

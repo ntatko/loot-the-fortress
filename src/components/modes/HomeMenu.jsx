@@ -15,7 +15,8 @@ const HomeMenu = () => {
   const { isConnected } = useGamepad();
   const { unlocked, conqueredCount, deployedAccomplices } = useWorld();
   const [firstTime, setFirstTime] = useState(
-    JSON.parse(localStorage.getItem("firstTime"))
+    // Nothing saved means this really is the first time, so show them the ropes.
+    JSON.parse(localStorage.getItem("firstTime")) ?? true
   );
   const [quitConfirm, setQuitConfirm] = useState(false);
 
