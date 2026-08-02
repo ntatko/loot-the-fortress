@@ -43,6 +43,29 @@ const BurstMark = ({ cx, cy }) => {
   return <polygon points={points.join(" ")} fill="#c8102e" />;
 };
 
+/** Somebody else's country, waiting to be looted. */
+const GlobeMark = ({ cx, cy }) => (
+  <g>
+    <circle cx={cx} cy={cy} r="16" fill="#6fa8a0" stroke="#3d6b64" strokeWidth="1.5" />
+    <ellipse cx={cx} cy={cy} rx="7" ry="16" fill="none" stroke="#eaf6f3" strokeWidth="1.4" />
+    <line x1={cx - 16} y1={cy} x2={cx + 16} y2={cy} stroke="#eaf6f3" strokeWidth="1.4" />
+    <path
+      d={`M ${cx - 14} ${cy - 8} Q ${cx} ${cy - 4} ${cx + 14} ${cy - 8}`}
+      fill="none"
+      stroke="#eaf6f3"
+      strokeWidth="1.2"
+    />
+    <path
+      d={`M ${cx - 14} ${cy + 8} Q ${cx} ${cy + 4} ${cx + 14} ${cy + 8}`}
+      fill="none"
+      stroke="#eaf6f3"
+      strokeWidth="1.2"
+    />
+  </g>
+);
+
+const MARKS = { burst: BurstMark, globe: GlobeMark };
+
 /**
  * A row of bubbles joined by arrows — the same visual language as the loop
  * diagram, reused for each step of the walkthrough.
@@ -103,7 +126,7 @@ const Flow = ({ items, title }) => {
         return (
           <g key={item.key || index}>
             <circle cx={cx} cy={CY} r={R} fill={tone.fill} stroke={tone.stroke} strokeWidth="3" />
-            {item.burst && <BurstMark cx={cx} cy={CY} />}
+            {item.mark && MARKS[item.mark]({ cx, cy: CY })}
             {item.image && (
               <image href={item.image} x={cx - 16} y={CY - 16} width="32" height="32" />
             )}
@@ -225,7 +248,7 @@ export const LootGraphic = () => (
     items={[
       { image: MoneyBag, label: ["tap Loot", "again"] },
       { image: Coins, label: ["+1 gold", "each time"] },
-      { burst: true, tone: "bad", label: ["or it bursts", "haul gone"] },
+      { mark: "burst", tone: "bad", label: ["or it bursts", "haul gone"] },
     ]}
   />
 );
@@ -292,13 +315,99 @@ export const WalesGraphic = () => (
   />
 );
 
-export const WorldGraphic = () => (
+export const WorldEntryGraphic = () => (
   <Flow
-    title="Send a delegation abroad, the country goes Welsh, its people join you"
+    title="Pay a country's entry fee in gold"
     items={[
-      { image: Accomplice, label: ["send a", "delegation"] },
-      { image: Wales, label: ["it goes", "Welsh"] },
+      { image: Coins, label: ["the entry fee", "in gold"] },
+      { mark: "globe", label: ["a country", "opens up"] },
+    ]}
+  />
+);
+
+export const WorldDelegationGraphic = () => (
+  <Flow
+    title="Station accomplices abroad, where they stop multiplying your hauls at home"
+    items={[
+      { image: Accomplice, label: ["accomplices", "at home"] },
+      { mark: "globe", label: ["stationed", "abroad"] },
+    ]}
+  />
+);
+
+/** How long a country takes to fall, against the size of the delegation. */
+export const WorldSpeedGraphic = () => {
+  const rows = [
+    { size: "10x its size", seconds: 5, time: "5s" },
+    { size: "same size", seconds: 50, time: "50s" },
+    { size: "half its size", seconds: 100, time: "100s" },
+  ];
+  const trackX = 172;
+  const trackWidth = 116;
+  const slowest = 100;
+
+  return (
+    <svg
+      viewBox="0 0 360 152"
+      role="img"
+      aria-label="Time for a country to fall: a delegation ten times its size takes 5 seconds, the same size 50 seconds, half the size 100 seconds"
+      style={{
+        display: "block",
+        width: "100%",
+        maxWidth: "22rem",
+        height: "auto",
+        margin: "0.25rem auto 0.75rem",
+        flexShrink: 0,
+      }}
+    >
+      <text x="8" y="14" fontFamily={MONO} fontSize="12" fill={MUTED}>
+        how long a country takes to fall
+      </text>
+
+      {rows.map((row, index) => {
+        const cy = 42 + index * 40;
+        return (
+          <g key={row.size}>
+            <GlobeMark cx={24} cy={cy} />
+            <text x="48" y={cy + 5} fontFamily={MONO} fontSize="13" fontWeight="bold" fill={INK}>
+              {row.size}
+            </text>
+            <rect x={trackX} y={cy - 7} width={trackWidth} height="14" rx="7" fill="#00000014" />
+            <rect
+              x={trackX}
+              y={cy - 7}
+              width={Math.max(6, (row.seconds / slowest) * trackWidth)}
+              height="14"
+              rx="7"
+              fill="#bb6108"
+            />
+            <text x="298" y={cy + 5} fontFamily={MONO} fontSize="13" fill={INK}>
+              {row.time}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
+
+export const WorldFallsGraphic = () => (
+  <Flow
+    title="A looted country goes Welsh, and its whole population joins your accomplices"
+    items={[
+      { mark: "globe", label: ["fully", "looted"] },
+      { image: Wales, tone: "good", label: ["it goes", "Welsh"] },
       { image: Accomplice, tone: "good", label: ["they all", "join you"] },
+    ]}
+  />
+);
+
+export const WorldEndingGraphic = () => (
+  <Flow
+    title="Take every country and Wales is the only one left standing"
+    items={[
+      { mark: "globe", label: ["every", "country"] },
+      { image: Wales, tone: "good", label: ["the only one", "left standing"] },
     ]}
   />
 );

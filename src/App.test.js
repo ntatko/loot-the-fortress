@@ -65,7 +65,20 @@ describe('the how-to-play modal', () => {
     const sectionFor = (title) => screen.getByText(title).closest('section');
     // One apiece for the accomplice, the iphone and wales.
     expect(sectionFor('Stage two').querySelectorAll('svg[role="img"]')).toHaveLength(3);
-    expect(sectionFor('Ruling the world').querySelectorAll('svg[role="img"]')).toHaveLength(1);
+
+    // The world stage is its own five step walkthrough.
+    const world = sectionFor('Ruling the world');
+    expect(world.querySelectorAll('svg[role="img"]')).toHaveLength(5);
+    [
+      '1. Buy your way in',
+      '2. Send a delegation',
+      '3. Let them work',
+      '4. Take the country',
+      '5. Rule the world',
+    ].forEach((heading) => {
+      const step = within(world).getByText(heading).closest('section');
+      expect(step.querySelector('svg[role="img"]')).not.toBeNull();
+    });
   });
 
   it('scrolls the diagrams along with the text', () => {

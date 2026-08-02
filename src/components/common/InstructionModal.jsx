@@ -27,7 +27,11 @@ import {
   LootGraphic,
   ShopGraphic,
   WalesGraphic,
-  WorldGraphic,
+  WorldDelegationGraphic,
+  WorldEndingGraphic,
+  WorldEntryGraphic,
+  WorldFallsGraphic,
+  WorldSpeedGraphic,
 } from "./InstructionGraphics";
 
 const inline = { height: "1.5rem", verticalAlign: "middle" };
@@ -239,34 +243,60 @@ const InstructionModal = (props) => {
 
         {hasPopulatedWales && (
           <Unlocked title="Ruling the world">
-            <WorldGraphic />
             <p>
               You filled <b>wales</b> with 3.2 million accomplices, so the world
-              map is open from the main menu.
+              map is open from the main menu. Stop stealing coins. Start taking
+              countries.
             </p>
-            <p>
-              Pay a country's entry fee in{" "}
-              <img style={inline} src={Coins} alt="gold" /> gold and station a{" "}
-              <b>delegation</b> of accomplices there. They loot it in the
-              background — a delegation the size of the country takes about a
-              minute, half that size takes twice as long, and nothing ever falls
-              in under five seconds.
-            </p>
-            <p>
-              When a country is fully looted, its entire population joins your
-              accomplices and its treasury joins your gold. That is how you
-              afford the next one, and the one after that, all the way up to
-              China.
-            </p>
-            <p>
-              Accomplices stationed abroad don't multiply your hauls back at the
-              fortress, so don't send everyone. You can <b>recall</b> a
-              delegation at any time and the looting progress waits for them.
-            </p>
-            <p>
-              Take every country and Wales is the only one left standing. That's
-              the end of the game.
-            </p>
+
+            <Step number={1} title="Buy your way in">
+              <WorldEntryGraphic />
+              <p>
+                Every country has an entry fee in{" "}
+                <img style={inline} src={Coins} alt="gold" /> gold, priced by
+                its population. Pay it once and that country stays open to you.
+              </p>
+            </Step>
+
+            <Step number={2} title="Send a delegation">
+              <WorldDelegationGraphic />
+              <p>
+                Station as many <b>accomplices</b> there as you dare. They're
+                abroad now, so they stop multiplying your hauls back at the
+                fortress — don't send everyone.
+              </p>
+            </Step>
+
+            <Step number={3} title="Let them work">
+              <WorldSpeedGraphic />
+              <p>
+                They loot in the background, even while the game is closed. The
+                bigger the delegation against the size of the country, the
+                faster it falls — though nothing ever falls in under five
+                seconds. You can <b>recall</b> a delegation at any time, and the
+                progress waits for them.
+              </p>
+            </Step>
+
+            <Step number={4} title="Take the country">
+              <WorldFallsGraphic />
+              <p>
+                When the looting finishes, that country's entire population
+                joins your accomplices and its treasury joins your{" "}
+                <img style={inline} src={Coins} alt="gold" /> gold. That is how
+                you afford the next one, and the one after that, all the way up
+                to China.
+              </p>
+            </Step>
+
+            <Step number={5} title="Rule the world">
+              <WorldEndingGraphic />
+              <p>
+                Take every country and Wales is the only one left standing.
+                There's nobody left to steal from, because there's nobody left
+                who isn't you. That's the end of the game.
+              </p>
+            </Step>
           </Unlocked>
         )}
       </div>
