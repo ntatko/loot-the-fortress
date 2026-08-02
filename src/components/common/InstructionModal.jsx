@@ -244,7 +244,8 @@ const InstructionModal = (props) => {
             <p>
               Every time you answer your trivia question wrong, your{" "}
               <strong>iphone</strong> corrects you, because you should have been
-              googling those anyway.
+              googling those anyway. Get caught with one and you keep the whole
+              haul instead of half of it.
             </p>
 
             <div

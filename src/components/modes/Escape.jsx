@@ -12,38 +12,33 @@ import Modal from "../core/Modal";
 
 const Escape = () => {
   const location = useLocation();
-  const [question, setQuestion] = useState(getTriviaQuestion());
+  const [question, setQuestion] = useState(getTriviaQuestion);
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const { inventoryItems, updateInventory } = useInventory();
+
+  const answerQuestion = (answer) => {
+    if (answer.correct) {
+      setCorrectCount(correctCount + 1);
+    } else {
+      setIncorrectCount(incorrectCount + 1);
+    }
+    setQuestion(getTriviaQuestion(question));
+  };
 
   const renderQuestion = () => {
     return (
       <div>
         <div className="escape-question">{question.question}</div>
         <div className="escape-answers">
-          <TriviaAnswerButton
-            onClick={() => {
-              setCorrectCount(correctCount + 1);
-              setQuestion(getTriviaQuestion());
-            }}
-          >
-            <div className="escape-answer">
-              <img src={Key} alt={"Key"} />
-              <div>{question.correct}</div>
-            </div>
-          </TriviaAnswerButton>
-          {question.incorrect.map((answer) => (
+          {question.answers.map((answer) => (
             <TriviaAnswerButton
-              key={answer}
-              onClick={() => {
-                setIncorrectCount(incorrectCount + 1);
-                setQuestion(getTriviaQuestion());
-              }}
+              key={answer.text}
+              onClick={() => answerQuestion(answer)}
             >
               <div className="escape-answer">
                 <img src={Key} alt={"Key"} />
-                <div>{answer}</div>
+                <div>{answer.text}</div>
               </div>
             </TriviaAnswerButton>
           ))}
@@ -121,20 +116,18 @@ const Escape = () => {
             src={getInventoryImage(IPHONE)}
             className="modal-gold-icon"
           />{" "}
-          apples. You can keep your dirty money (
+          apples. Keep the lot (
           <img
             alt="gold currency"
             src={Gold}
             className="modal-gold-icon"
           />{" "}
-          {location.state?.amount ? Math.floor(location.state?.amount / 2) : 0}
+          {location.state?.amount || 0}
           ). Just ask Siri for the answer next time.
         </div>
         <ButtonLink
           to="/"
-          onClick={() =>
-            updateInventory(GOLD, Math.floor(location.state?.amount / 2) || 0)
-          }
+          onClick={() => updateInventory(GOLD, location.state?.amount || 0)}
         >
           🤷 Whatever
         </ButtonLink>
