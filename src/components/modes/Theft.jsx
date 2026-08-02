@@ -12,6 +12,7 @@ import Inventory, {
 import LoserModal from "../common/LoserModal";
 import FadeOutAction from "../common/FadeOutAction";
 import { useInventory } from "../../context/useInventory";
+import { useWorld } from "../../context/useWorld";
 import ButtonLink from "../core/ButtonLink";
 import "./Theft.css";
 
@@ -28,6 +29,7 @@ const Theft = () => {
   );
 
   const { inventoryItems, updateInventory } = useInventory();
+  const { unlocked: rulesTheWorld } = useWorld();
 
   const hasBags = inventoryItems.some(
     (e) =>
@@ -233,6 +235,10 @@ const Theft = () => {
       )}
       <LoserModal
         show={
+          // Being broke is only game over before you own a country. After that
+          // your delegations are still out there earning, so wiping the save
+          // over three gold would be daylight robbery.
+          !rulesTheWorld &&
           !hasBags &&
           inventoryItems.find((e) => e.type === GOLD).count +
             goldCount * (1 + accompliceCount) <

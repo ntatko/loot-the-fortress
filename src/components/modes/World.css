@@ -1,0 +1,225 @@
+.world-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #00ad4c 0%, #6bbf8a 35%, #f4f1ea 100%);
+  overflow: scroll;
+  padding-bottom: 3rem;
+}
+
+.world-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.world-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 3rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.world-title-flag {
+  height: 3.5rem;
+}
+
+.world-subtitle {
+  font-size: 1.5rem;
+  font-family: 'Syne Mono', monospace;
+  margin-top: 0.5rem;
+}
+
+.world-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.world-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff7e;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  min-width: 7rem;
+}
+
+.world-stat-image {
+  height: 2rem;
+}
+
+.world-stat-value {
+  font-size: 1.75rem;
+  font-family: 'Syne Mono', monospace;
+  font-weight: bold;
+}
+
+.world-stat-label {
+  font-size: 0.9rem;
+  font-family: 'Syne Mono', monospace;
+}
+
+.world-countries {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 80rem;
+}
+
+.country-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 18rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  border-radius: 1.5rem;
+  background-color: #ffffffc4;
+  font-family: 'Syne Mono', monospace;
+}
+
+.country-card.welsh {
+  background-color: #00ad4c8c;
+  box-shadow: inset 0 0 0 3px #c8102e;
+}
+
+.country-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.country-flag {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.country-flag-image {
+  height: 2.5rem;
+}
+
+.country-name {
+  font-size: 1.5rem;
+}
+
+.country-population {
+  font-size: 1rem;
+  opacity: 0.75;
+  margin: 0.25rem 0 0.75rem;
+}
+
+.country-progress {
+  position: relative;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: #00000021;
+  overflow: hidden;
+}
+
+.country-progress-bar {
+  height: 100%;
+  background-color: #c8102e;
+  transition: width 1s linear;
+}
+
+.country-progress-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.country-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 2.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+.welsh-status {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.country-price-icon {
+  height: 1rem;
+}
+
+.country-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.country-actions .button {
+  font-size: 1.1rem;
+}
+
+.deploy-body {
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+.deploy-figures {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.deploy-icon {
+  height: 1.1rem;
+  vertical-align: middle;
+}
+
+.deploy-slider {
+  width: 100%;
+  accent-color: #c8102e;
+}
+
+.deploy-size {
+  font-size: 1.75rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.deploy-presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.deploy-presets .button {
+  font-size: 1rem;
+}
+
+.deploy-eta {
+  text-align: center;
+  font-size: 1.2rem;
+  padding-top: 0.5rem;
+}

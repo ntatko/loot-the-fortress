@@ -13,7 +13,9 @@ import Inventory, {
 import Coins from "../../assets/gold_coins.svg";
 import Button from "../core/Button";
 import WinningModal from "../common/WinningModal";
+import StageThreeModal from "../common/StageThreeModal";
 import { useInventory } from "../../context/useInventory";
+import { useWorld } from "../../context/useWorld";
 import "./Shop.css";
 import ButtonLink from "../core/ButtonLink";
 
@@ -29,10 +31,10 @@ const costs = {
 
 const Shop = () => {
   const { inventoryItems, buyItems } = useInventory();
+  const { justUnlocked, acknowledgeUnlock } = useWorld();
   const [showWinningModal, setShowWinningModal] = useState(false);
   const currentGold = inventoryItems.find((item) => item.type === GOLD).count;
   const [buyMaxItem, setBuyMaxItem] = useState(null);
-  //   const [showStageThreeModal, setShowStageThreeModal] = useState(false);
 
   const buyItem = (type) => {
     try {
@@ -49,12 +51,10 @@ const Shop = () => {
 
   const hasWon =
     inventoryItems.find((item) => item.type === CROWN)?.count > 0 ?? false;
-  //   const hasWonStageTwo =
-  //     inventoryItems.find((item) => item.type === WALES)?.count > 0 &&
-  //     inventoryItems.find((item) => item.type === ACCOMPLICE)?.count >= 3200000;
 
   return (
     <>
+      <StageThreeModal show={justUnlocked} onClose={acknowledgeUnlock} />
       <ConfirmModal
         item={buyMaxItem}
         onCancel={() => setBuyMaxItem(null)}
@@ -107,21 +107,7 @@ const Shop = () => {
               <ShopInventoryItem
                 currentGold={currentGold}
                 onClick={() => buyItem(ACCOMPLICE)}
-                maxClick={() => {
-                  //   if (
-                  //     inventoryItems.find((i) => i.type === WALES) &&
-                  //     inventoryItems.find((i) => i.type === WALES)?.count > 0
-                  //   ) {
-                  //     if (
-                  //       inventoryItems.find((i) => i.type === ACCOMPLICE) &&
-                  //       inventoryItems.find((i) => i.type === ACCOMPLICE)?.count >
-                  //         3200000
-                  //     ) {
-                  //       setShowStageThreeModal(true);
-                  //     }
-                  //   }
-                  setBuyMaxItem(ACCOMPLICE);
-                }}
+                maxClick={() => setBuyMaxItem(ACCOMPLICE)}
                 type={ACCOMPLICE}
               />
               <ShopInventoryItem

@@ -19,6 +19,14 @@
   font-family: 'Syne Mono', monospace;
 }
 
+.home-world-status {
+  font-family: 'Syne Mono', monospace;
+  font-size: 1.2rem;
+  background-color: #ffffff7e;
+  border-radius: 1rem;
+  padding: 0.35rem 1rem;
+}
+
 .gamepad-indicator {
   color: #bb6108;
   margin-left: 0.5rem;

@@ -1,11 +1,13 @@
 import React from "react";
 import Button from "../core/Button";
 import { useInventory } from "../../context/useInventory";
+import { useWorld } from "../../context/useWorld";
 import Modal from "../core/Modal";
 import PropTypes from "prop-types";
 
 const StartOverModal = ({ onClose }) => {
   const { resetInventory } = useInventory();
+  const { resetWorld } = useWorld();
 
   return (
     <Modal isOpen={true} onClose={onClose}>
@@ -23,6 +25,7 @@ const StartOverModal = ({ onClose }) => {
           className="btn btn-danger"
           onClick={() => {
             resetInventory();
+            resetWorld();
             window.location.reload();
           }}
         >

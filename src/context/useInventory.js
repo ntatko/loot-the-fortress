@@ -31,6 +31,31 @@ export const InventoryProvider = ({ children }) => {
         localStorage.setItem('inventoryItems', JSON.stringify(newInventory));
     };
 
+    /**
+     * Apply several changes at once, e.g. { accomplice: -500, gold: -1000 }.
+     * Unlike updateInventory this reads from the latest state rather than the
+     * render it was created in, so the world tick can settle a handful of
+     * conquests in a single pass without clobbering itself.
+     */
+    const applyInventoryChanges = (changes) => {
+        setInventoryItems((current) => {
+            const newInventory = current.map((item) => ({ ...item }));
+            Object.entries(changes).forEach(([type, change]) => {
+                if (!change) {
+                    return;
+                }
+                const index = newInventory.findIndex(item => item.type === type);
+                if (index === -1) {
+                    newInventory.push({ type, count: change });
+                } else {
+                    newInventory[index].count += change;
+                }
+            });
+            localStorage.setItem('inventoryItems', JSON.stringify(newInventory));
+            return newInventory;
+        });
+    };
+
     const buyItems = (type, change, cost) => {
       const newInventory = [...inventoryItems];
       const index = newInventory.findIndex((item) => item.type === type);
@@ -53,7 +78,7 @@ export const InventoryProvider = ({ children }) => {
     };
 
     return (
-        <InventoryContext.Provider value={{ inventoryItems, updateInventory, resetInventory, buyItems }}>
+        <InventoryContext.Provider value={{ inventoryItems, updateInventory, applyInventoryChanges, resetInventory, buyItems }}>
             {children}
         </InventoryContext.Provider>
     );

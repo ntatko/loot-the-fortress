@@ -17,18 +17,15 @@ import Briefcase from "../../assets/briefcase.svg";
 import Crown from "../../assets/crown.svg";
 import Key from "../../assets/key.svg";
 import { useInventory } from "../../context/useInventory";
+import { useWorld } from "../../context/useWorld";
 import Modal from "../core/Modal";
 
 const InstructionModal = (props) => {
   const { inventoryItems } = useInventory();
+  const { unlocked: hasPopulatedWales } = useWorld();
   const hasCrown =
     inventoryItems.find((item) => item.type === CROWN) &&
     inventoryItems.find((item) => item.type === CROWN)?.count > 0;
-  //   const hasPopulatedWales =
-  //     inventoryItems.find((item) => item.type === WALES) &&
-  //     inventoryItems.find((item) => item.type === WALES)?.count > 0 &&
-  //     inventoryItems.find((item) => item.type === ACCOMPLICE) &&
-  //     inventoryItems.find((item) => item.type === ACCOMPLICE)?.count >= 3200000;
 
   return (
     <Modal isOpen={props.show} onClose={props.onClose}>
@@ -290,6 +287,48 @@ const InstructionModal = (props) => {
             <p>
               Oh, and the population of Wales is 3.2 million people. Just an
               interesting hint.
+            </p>
+          </>
+        )}
+
+        {hasPopulatedWales && (
+          <>
+            <hr />
+            <div
+              style={{
+                fontSize: "1.5rem",
+                fontFamily: "Syne Mono",
+                monospace: "true",
+              }}
+            >
+              <b>Ruling the world</b>
+            </div>
+            <p>
+              You filled <b>wales</b> with 3.2 million accomplices, so the world
+              map is open from the main menu.
+            </p>
+            <p>
+              Pay a country's entry fee in{" "}
+              <img style={{ height: "1.5rem" }} src={Coins} alt={"gold"} /> gold
+              and station a <b>delegation</b> of accomplices there. They loot it
+              in the background — a delegation the size of the country takes
+              about a minute, half that size takes twice as long, and nothing
+              ever falls in under five seconds.
+            </p>
+            <p>
+              When a country is fully looted, its entire population joins your
+              accomplices and its treasury joins your gold. That is how you
+              afford the next one, and the one after that, all the way up to
+              China.
+            </p>
+            <p>
+              Accomplices stationed abroad don't multiply your hauls back at the
+              fortress, so don't send everyone. You can <b>recall</b> a
+              delegation at any time and the looting progress waits for them.
+            </p>
+            <p>
+              Take every country and Wales is the only one left standing. That's
+              the end of the game.
             </p>
           </>
         )}

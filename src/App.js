@@ -5,15 +5,19 @@ import HomeMenu from './components/modes/HomeMenu';
 import Shop from './components/modes/Shop';
 import Theft from './components/modes/Theft';
 import Escape from './components/modes/Escape';
+import World from './components/modes/World';
 import { GamepadProvider } from './context/useGamepad';
 import { InventoryProvider } from './context/useInventory';
+import { WorldProvider } from './context/useWorld';
 
 function App() {
   return (
     <div className="App">
       <GamepadProvider>
         <InventoryProvider>
-          <Pages />
+          <WorldProvider>
+            <Pages />
+          </WorldProvider>
         </InventoryProvider>
       </GamepadProvider>
     </div>
@@ -29,6 +33,7 @@ const Pages = () => {
       <Route path="/theft" element={<Theft />} />
       <Route path="/inventory" element={<Shop />} />
       <Route path="/escape" element={<Escape />} />
+      <Route path="/world" element={<World />} />
       <Route path="/" element={<HomeMenu />} />
     </Routes>
   </BrowserRouter>
