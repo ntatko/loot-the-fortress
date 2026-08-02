@@ -51,6 +51,23 @@ describe('the how-to-play modal', () => {
     });
   });
 
+  it('illustrates the later stages too, once they unlock', () => {
+    localStorage.removeItem('firstTime');
+    saveInventory([
+      { type: BURLAP_SACK, count: 2 },
+      { type: GOLD, count: 500000000 },
+      { type: 'crown', count: 1 },
+      { type: WALES, count: 1 },
+      { type: ACCOMPLICE, count: 3200000 },
+    ]);
+    render(<App />);
+
+    const sectionFor = (title) => screen.getByText(title).closest('section');
+    // One apiece for the accomplice, the iphone and wales.
+    expect(sectionFor('Stage two').querySelectorAll('svg[role="img"]')).toHaveLength(3);
+    expect(sectionFor('Ruling the world').querySelectorAll('svg[role="img"]')).toHaveLength(1);
+  });
+
   it('scrolls the diagrams along with the text', () => {
     localStorage.removeItem('firstTime');
     const { container } = render(<App />);

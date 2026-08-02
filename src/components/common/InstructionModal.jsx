@@ -19,11 +19,14 @@ import { useWorld } from "../../context/useWorld";
 import Modal from "../core/Modal";
 import GameLoopDiagram from "./GameLoopDiagram";
 import {
+  AccompliceGraphic,
   BagOddsGraphic,
   CrownGraphic,
   EscapeGraphic,
+  IphoneGraphic,
   LootGraphic,
   ShopGraphic,
+  WalesGraphic,
   WorldGraphic,
 } from "./InstructionGraphics";
 
@@ -203,6 +206,7 @@ const InstructionModal = (props) => {
             </p>
 
             <ItemHeading type={ACCOMPLICE} tagline="A thieving multiplier" />
+            <AccompliceGraphic />
             <p>
               Every time you loot, your <strong>accomplice</strong> does, too.
               Your <b>sack</b> can hold all the extra gold, too, without being
@@ -212,6 +216,7 @@ const InstructionModal = (props) => {
             </p>
 
             <ItemHeading type={IPHONE} tagline="A Googling Device" />
+            <IphoneGraphic />
             <p>
               Every time you answer your trivia question wrong, your{" "}
               <strong>iphone</strong> corrects you, because you should have been
@@ -220,6 +225,7 @@ const InstructionModal = (props) => {
             </p>
 
             <ItemHeading type={WALES} tagline="Literally, the country of wales" />
+            <WalesGraphic />
             <p>
               Yeah, you can buy <strong>wales</strong>. What other game lets you
               do that?

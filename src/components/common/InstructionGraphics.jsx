@@ -8,6 +8,7 @@ import Key from "../../assets/key.svg";
 import Crown from "../../assets/crown.svg";
 import Wales from "../../assets/wales.svg";
 import Accomplice from "../../assets/accomplice.svg";
+import Iphone from "../../assets/iphone.svg";
 
 const R = 32; // bubble radius
 const STEP = 108; // distance between bubble centres (fits a ~14 char label)
@@ -254,6 +255,39 @@ export const CrownGraphic = () => (
     items={[
       { image: Coins, label: ["100 gold", "banked"] },
       { image: Crown, tone: "good", label: ["buy the", "crown"] },
+    ]}
+  />
+);
+
+export const AccompliceGraphic = () => (
+  <Flow
+    title="Every accomplice loots alongside you, multiplying the haul"
+    items={[
+      { image: Coins, label: ["you loot", "+1 gold"] },
+      { image: Accomplice, label: ["accomplices", "loot too"] },
+      { image: Coins, tone: "good", label: ["your haul", "multiplies"] },
+    ]}
+  />
+);
+
+export const IphoneGraphic = () => (
+  <Flow
+    title="Get the trivia question wrong with an iphone and you keep the haul anyway"
+    items={[
+      { image: Key, tone: "bad", label: ["wrong answer", "caught"] },
+      { image: Iphone, label: ["your iphone", "saves you"] },
+      { image: Coins, tone: "good", label: ["keep it all", "anyway"] },
+    ]}
+  />
+);
+
+export const WalesGraphic = () => (
+  <Flow
+    title="Buy Wales, then fill it with 3.2 million accomplices"
+    items={[
+      { image: Coins, label: ["1 million", "gold"] },
+      { image: Wales, label: ["you own", "wales"] },
+      { image: Accomplice, tone: "good", label: ["fill it with", "3.2 million"] },
     ]}
   />
 );
