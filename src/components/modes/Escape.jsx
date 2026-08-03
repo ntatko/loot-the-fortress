@@ -9,6 +9,7 @@ import { getInventoryImage, GOLD, IPHONE } from "../common/Inventory";
 import { useInventory } from "../../context/useInventory";
 import "./Escape.css";
 import Modal from "../core/Modal";
+import { formatCount } from "../../utils/format";
 
 const Escape = () => {
   const location = useLocation();
@@ -56,7 +57,7 @@ const Escape = () => {
         <div className="escape-title">
           Escape with{" "}
           <img className="escape-gold-icon" src={Gold} alt={"stuff"} />{" "}
-          {location.state?.amount || 0}
+          {formatCount(location.state?.amount || 0)}
         </div>
 
         {renderQuestion()}
@@ -67,7 +68,7 @@ const Escape = () => {
         <div className="modal-text">
           Put your{" "}
           <img alt="gold currency" className="modal-gold-icon" src={Gold} />
-          {location.state?.amount || 0} in the bank.
+          {formatCount(location.state?.amount || 0)} in the bank.
         </div>
         <ButtonLink
           to="/"
@@ -90,7 +91,9 @@ const Escape = () => {
             className="modal-gold-icon"
             src={Gold}
           />{" "}
-          {location.state?.amount ? Math.floor(location.state?.amount / 2) : 0}
+          {formatCount(
+            location.state?.amount ? Math.floor(location.state?.amount / 2) : 0
+          )}
           ).
         </div>
         <ButtonLink
@@ -122,7 +125,7 @@ const Escape = () => {
             src={Gold}
             className="modal-gold-icon"
           />{" "}
-          {location.state?.amount || 0}
+          {formatCount(location.state?.amount || 0)}
           ). Just ask Siri for the answer next time.
         </div>
         <ButtonLink

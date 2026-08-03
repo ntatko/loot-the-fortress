@@ -14,6 +14,7 @@ import FadeOutAction from "../common/FadeOutAction";
 import { useInventory } from "../../context/useInventory";
 import { useWorld } from "../../context/useWorld";
 import ButtonLink from "../core/ButtonLink";
+import { formatCount } from "../../utils/format";
 import "./Theft.css";
 
 const Theft = () => {
@@ -174,16 +175,16 @@ const Theft = () => {
         <div className="theft-title">This haul</div>
         <div className="theft-gold-container">
           <img style={{ height: "3rem" }} src={GoldCoins} alt="Gold Coins" />
-          <div className="theft-gold-count">{goldCount}</div>
+          <div className="theft-gold-count">{formatCount(goldCount)}</div>
           {accompliceCount > 0 && (
             <div className="theft-accomplice-bonus">
-              {`+${accompliceCount}`}
+              {`+${formatCount(accompliceCount)}`}
               <img
                 style={{ height: "1rem" }}
                 src={getInventoryImage(ACCOMPLICE)}
                 alt="Gold Coins"
               />
-              {`=${(1 + accompliceCount) * goldCount}`}
+              {`=${formatCount((1 + accompliceCount) * goldCount)}`}
             </div>
           )}
         </div>
@@ -211,7 +212,9 @@ const Theft = () => {
             Escape
           </ButtonLink>
         </div>
-        <p className="theft-high-score">{`Best haul: ${highScore[bagType]}`}</p>
+        <p className="theft-high-score">{`Best haul: ${formatCount(
+          highScore[bagType] || 0
+        )}`}</p>
         <div className="theft-bag-selector-container">
           <BagSelector
             bagType={BURLAP_SACK}

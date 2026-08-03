@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { formatCount, formatExact } from "../../utils/format";
 
 const InventoryItem = (props) => {
   return (
     <div
+      title={`${formatExact(props.count)} ${props.type}`}
       style={{
         display: "flex",
         width: "100%",
@@ -30,7 +32,7 @@ const InventoryItem = (props) => {
             monospace: "true",
           }}
         >
-          {props.count}
+          {formatCount(props.count)}
         </div>
         <div
           style={{

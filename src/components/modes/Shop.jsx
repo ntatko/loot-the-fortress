@@ -18,6 +18,7 @@ import { useInventory } from "../../context/useInventory";
 import { useWorld } from "../../context/useWorld";
 import "./Shop.css";
 import ButtonLink from "../core/ButtonLink";
+import { formatCount, formatExact } from "../../utils/format";
 
 const costs = {
   [BURLAP_SACK]: 3,
@@ -144,9 +145,11 @@ const ShopInventoryItem = (props) => {
         <div className="shop-item-title">{props.type}</div>
       </div>
       <div className="shop-item-actions">
-        <div className="shop-item-price">
+        <div className="shop-item-price" title={formatExact(costs[props.type])}>
           <img src={Coins} alt={props.type} />
-          <div className="shop-item-price-value">{costs[props.type]}</div>
+          <div className="shop-item-price-value">
+            {formatCount(costs[props.type])}
+          </div>
         </div>
         <Button
           disabled={props.currentGold < costs[props.type]}
